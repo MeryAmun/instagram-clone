@@ -1,5 +1,5 @@
-import Posts from "./Posts/Posts";
+import Post from "./Post/Post";
 
 export {
-    Posts
+    Post
 }
