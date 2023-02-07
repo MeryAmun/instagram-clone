@@ -22,9 +22,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getFirestore(app);
-export const auth = getAuth();
-export const provider = new GoogleAuthProvider();
+ const auth = getAuth();
+
+ //get firebase.firestore
+const provider = new GoogleAuthProvider();
 provider.setCustomParameters({ prompt: 'select_account' });
 
 
-export default db
+export  { db, auth, provider }
