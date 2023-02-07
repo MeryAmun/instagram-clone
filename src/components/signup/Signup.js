@@ -19,7 +19,7 @@ const Signup = () => {
   };
   return (
     <div className="signup">
-      <div className="">
+      <div className="signup__field">
         <TextField
           type="text"
           name="username"
@@ -30,7 +30,7 @@ const Signup = () => {
           fullWidth
         />
       </div>
-      <div className="">
+      <div className="signup__field">
         <TextField
           type="email"
           name="email"
@@ -41,7 +41,7 @@ const Signup = () => {
           fullWidth
         />
       </div>
-      <div className="">
+      <div className="signup__field">
         <TextField
           type="password"
           name="password"
@@ -52,7 +52,7 @@ const Signup = () => {
           fullWidth
         />
       </div>
-      <div className="signup__button">
+      <div className="signup__button signup__field">
         <Button
           type="submit"
           variant="contained"
@@ -60,7 +60,7 @@ const Signup = () => {
           onClick={() => {}}
           style={{ width: "200px" }}
         >
-          Next
+         Sign Up
         </Button>
       </div>
     </div>

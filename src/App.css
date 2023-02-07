@@ -12,3 +12,6 @@
     padding: 20px;
     border-bottom:  1px solid lightgray;
   }
+  .form__switchButton{
+    display: flex;
+  }
