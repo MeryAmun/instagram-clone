@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import './styles.css'
 import Button from '@mui/material/Button';
 import { TextField } from "@mui/material";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from '../../firebaseConfig';
 
 
 const initialState = {
@@ -11,8 +13,19 @@ const initialState = {
 const Login = () => {
     const [formData, setFormData] = useState(initialState);
 
-    const signUp = (e) => {
+    const signIn = (e) => {
       e.preventDefault();
+      signInWithEmailAndPassword(auth, formData.email, formData.password)
+      .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+        console.log(user)
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
     };
     const handleChange = (e) => {
       const value = e.target.value;
@@ -47,7 +60,7 @@ const Login = () => {
           type="submit"
           variant="contained"
           sx={{ width: 350 }}
-          onClick={() => {}}
+          onClick={signIn}
           style={{ width: "200px" }}
         >
          Sign In

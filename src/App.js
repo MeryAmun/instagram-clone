@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import { Login, Post, Signup } from "./components";
 import { collection, query, onSnapshot } from "firebase/firestore";
-import { db } from "./firebaseConfig";
+import { auth, db } from "./firebaseConfig";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 const style = {
   position: "absolute",
   top: "50%",
@@ -21,6 +22,29 @@ function App() {
   const [posts, setPosts] = useState([]);
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState("Signup");
+  const [user, setUser] = useState(null);
+  const [userId, setUserId] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+ onAuthStateChanged(auth, (authUser) => {
+    if(authUser){
+      setUser(authUser.displayName);
+      setUserId(authUser.uid)
+    }else{
+      setUser(null)
+    }
+  })
+  }, [user, userId])
+  console.log(user, userId)
+
+
+  useEffect(() => {
+const current = auth.currentUser
+    setCurrentUser(current)   
+
+  }, [currentUser])
+  console.log(currentUser.displayName, currentUser.uid)
 
   useEffect(() => {
     const data = query(collection(db, "posts"));
@@ -34,6 +58,13 @@ function App() {
     });
   }, []);
 
+  const logOut = () => {
+    signOut(auth).then(() => {
+      // Sign-out successful.
+    }).catch((error) => {
+      // An error happened.
+    });
+  }
   return (
     <div className="app">
       {/* Header */}
@@ -47,7 +78,9 @@ function App() {
       <h1>Instagram</h1>
       {/* modal */}
       <div className="app__modal">
-        <Button onClick={() => setOpen(true)}>Open modal</Button>
+       {
+        user ? ( <Button onClick={logOut}>Sign Out</Button>) : ( <Button onClick={() => setOpen(true)}>Login/Register</Button>)
+       }
         <Modal
           open={open}
           onClose={() => setOpen(false)}
