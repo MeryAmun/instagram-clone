@@ -3,7 +3,7 @@ import './post.css'
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 
-const Post = ({imageUrl, caption, username, message}) => {
+const Post = ({imageUrl, caption, username, message, timestamp}) => {
   return (
     <div className='post'>
     {/* header plus avatar */}
@@ -20,6 +20,7 @@ const Post = ({imageUrl, caption, username, message}) => {
    <div className="post__message">
    <p className='post__text'>{message}</p>
    </div>
+   {/* <span className="post__timestamp">{timestamp}</span> */}
     </div>
   )
 }

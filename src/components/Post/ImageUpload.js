@@ -17,15 +17,15 @@ const ImageUpload = ({ username }) => {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    setProgress((oldProgress) => {
-      if (oldProgress === 100) {
-        return 0;
-      }
-      const diff = Math.random() * 10;
-      return Math.min(oldProgress + diff, 100);
-    });
-  }, []);
+  // useEffect(() => {
+  //   setProgress((oldProgress) => {
+  //     if (oldProgress === 100) {
+  //       return 0;
+  //     }
+  //     const diff = Math.random() * 10;
+  //     return Math.min(oldProgress + diff, 100);
+  //   });
+  // }, []);
 
   const onFileChangeHandler = (e) => {
     setCurrentFile(e.target.files[0]);
