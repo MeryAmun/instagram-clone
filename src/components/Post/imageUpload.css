@@ -1,5 +1,11 @@
-.image__container,
-.imageUpload__caption,
+.createPost{
+    display: flex;
+    margin-left: 1rem;
+  
+    align-items: center;
+    margin-right: auto;
+}
+
 .imageUpload__button{
     margin: 15px;
 }
@@ -7,7 +13,11 @@
     width: 30%;
     color: red;
 }
-.imageUpload__messageContainer{
+.image_label{
+   margin-left: 10px; 
+}
+.imageUpload__messageContainer, .imageUpload__caption{
+    margin: 10px;
     width: 400px;
 }
 .imageUpload__message{

@@ -44,7 +44,7 @@ const Profile = () => {
       </center>
       <div className="profile__details">
       <div className="profile__header">
-        <Avatar alt='avatar' src={userData.photoUrl}
+        <Avatar alt='avatar' src={userData?.photoUrl}
         className='profile__avatar'/>
     </div>
       <h4 className='profile__text'><strong>Username</strong>: {userData?.displayName}</h4>

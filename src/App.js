@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import { ImageUpload, Login, Post, Profile, Signup } from "./components";
-import { collection, query, onSnapshot } from "firebase/firestore";
+import { collection, query, onSnapshot,orderBy } from "firebase/firestore";
 import { auth, db } from "./firebaseConfig";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -50,7 +50,7 @@ function App() {
   //console.log(currentUser.displayName, currentUser.uid)
 
   useEffect(() => {
-    const data = query(collection(db, "posts"));
+    const data = query(collection(db, "posts"),orderBy('timestamp', 'desc'));
     onSnapshot(data, (querySnapshot) => {
       setPosts(
         querySnapshot.docs.map((doc) => ({
@@ -83,7 +83,6 @@ function App() {
           )}
         </div>
       </div>
-      <h1>Instagram</h1>
       {/* Profile Modal */}
       <Paper>
         <Box>
@@ -160,10 +159,10 @@ function App() {
         </Box>
       </Paper>
       {user ? (
-        <center>
+        <>
           {/* <Profile/> */}
           <ImageUpload username={user} />
-        </center>
+        </>
       ) : (
         <h3 className="app__signInNotice">
           Sorry you need to be logged in to be able to make a post
@@ -171,7 +170,7 @@ function App() {
       )}
       {/* Post */}
       {posts.map(({ post, id }) => (
-        <Post key={id} {...post} />
+        <Post key={id} {...post} uid={id}/>
       ))}
     </div>
   );

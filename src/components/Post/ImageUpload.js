@@ -81,19 +81,9 @@ const ImageUpload = ({ username }) => {
         </Box>
       </div>
       <form>
-        <div className="imageUpload__caption">
-          <TextField
-            type="text"
-            name="caption"
-            label="Enter Caption..."
-            onChange={(e) => setCaption(e.target.value)}
-            value={caption}
-            variant="outlined"
-          />
-        </div>
         <div className="">
           <div className="image__container">
-            <span className="unit_labels">Select Photo</span>
+            <span className="image_label">Select Photo</span>
             <IconButton
               color="primary"
               aria-label="upload picture"
@@ -126,10 +116,22 @@ const ImageUpload = ({ username }) => {
           )}
         </div>
         <center>
+        <div className="imageUpload__caption">
+          <TextField
+            type="text"
+            name="caption"
+            label="Enter Caption..."
+            onChange={(e) => setCaption(e.target.value)}
+            value={caption}
+            variant="outlined"
+            className="imageUpload__caption"
+          />
+        </div>
         <div className="imageUpload__messageContainer">
           <TextareaAutosize
             aria-label="minimum height"
-            minRows={3}
+            minRows={6}
+            cols={10}
             placeholder="Message"
             className="imageUpload__message"
             name="message"

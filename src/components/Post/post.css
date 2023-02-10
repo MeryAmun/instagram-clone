@@ -29,3 +29,41 @@ cursor:pointer;
 .post__text{
    word-wrap: break-word; 
 }
+
+.post__headerContainer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.post__actionIcons{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 1rem;
+}
+
+.post__deleteIcon{
+margin: .8rem;
+font-size: 28px;
+background: #fff;
+color: red;
+cursor: pointer;
+border: 1px solid lightgray;
+transition: background 4s ease-in-out 2s;
+}
+.post__editIcon{
+margin: .8rem;
+font-size: 28px;
+color: rgb(31, 43, 219);
+cursor: pointer;
+border: 1px solid lightgray;
+transition: background-color  1s;
+}
+.post__deleteIcon:hover{
+    background: lightgray;
+}
+.post__editIcon:hover{
+    background: lightgray;
+    /* opacity: 0.8; */
+}
