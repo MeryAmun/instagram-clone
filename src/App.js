@@ -3,9 +3,11 @@ import "./App.css";
 import { ImageUpload, Login, Post, Profile, Signup } from "./components";
 import { collection, query, onSnapshot } from "firebase/firestore";
 import { auth, db } from "./firebaseConfig";
-import Box from "@mui/material/Box";
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
+import Avatar from '@mui/material/Avatar';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 const style = {
   position: "absolute",
@@ -65,6 +67,8 @@ const current = auth.currentUser
       // An error happened.
     });
   }
+
+  //( <Button onClick={logOut}>Log Out</Button>)
   return (
     <div className="app">
       {/* Header */}
@@ -76,12 +80,15 @@ const current = auth.currentUser
         />
         <div className="app__userStatus">
         {
-        user ? ( <Button onClick={logOut}>Log Out</Button>) : ( <Button onClick={() => setOpen(true)}>Login/Register</Button>)
+        user ? ( <Avatar alt='avatar' src='' className='post__avatar' onClick={() => setForm('Profile')}/>
+       ) : ( <Button onClick={() => setOpen(true)}>Login/Register</Button>)
        }
         </div>
       </div>
       <h1>Instagram</h1>
       {/* modal */}
+      <Paper elevation={3}>
+      <Box>
       <div className="app__modal">
        
         <Modal
@@ -119,15 +126,17 @@ const current = auth.currentUser
               </div>
             </div>
             <div className="modal__body">
-              {form === "Signup" ? <Signup /> : <Login />}
+              {form === "Signup" ? (<Signup />)  : form === 'Login' ? (<Login />) : (<Profile/>)}
             </div>
           </Box>
         </Modal>
       </div>
+      </Box>
+      </Paper>
      {
       user ? (
         <center>
-           <Profile/>
+           {/* <Profile/> */}
       <ImageUpload username={user}/>
         </center>
       ) : (

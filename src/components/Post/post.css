@@ -25,3 +25,7 @@
 .post__avatar{
 margin-right: 10px;
 }
+
+.post__text{
+   word-wrap: break-word; 
+}

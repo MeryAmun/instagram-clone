@@ -12,6 +12,7 @@ const initialState = {
   };
 const Login = () => {
     const [formData, setFormData] = useState(initialState);
+    const [error, setError] = useState("")
 
     const signIn = (e) => {
       e.preventDefault();
@@ -23,8 +24,8 @@ const Login = () => {
         // ...
       })
       .catch((error) => {
-        const errorCode = error.code;
         const errorMessage = error.message;
+        setError(errorMessage)
       });
     };
     const handleChange = (e) => {
@@ -66,6 +67,11 @@ const Login = () => {
          Sign In
         </Button>
       </div>
+      <div className="signup__button signup__field">
+          <span>
+            <strong>{error}</strong>
+          </span>
+        </div>
     </div>
   )
 }
