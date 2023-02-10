@@ -5,13 +5,20 @@
   .app{
     background-color: #fafafa;
     
+     
   }
   .app__header{
     background-color: white;
     object-fit: contain;
     padding: 20px;
     border-bottom:  1px solid lightgray;
+    display: flex;
+    justify-content: space-between;
   }
   .form__switchButton{
     display: flex;
+  }
+
+  .app__signInNotice{
+    margin: 1rem;
   }

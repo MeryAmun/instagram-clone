@@ -1,0 +1,9 @@
+.image__container,
+.imageUpload__caption,
+.imageUpload__button{
+    margin: 15px;
+}
+.imageUpload__error{
+    width: 30%;
+    color: red;
+}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import { Login, Post, Signup } from "./components";
+import { ImageUpload, Login, Post, Profile, Signup } from "./components";
 import { collection, query, onSnapshot } from "firebase/firestore";
 import { auth, db } from "./firebaseConfig";
 import Box from "@mui/material/Box";
@@ -29,14 +29,13 @@ function App() {
   useEffect(() => {
  onAuthStateChanged(auth, (authUser) => {
     if(authUser){
-      setUser(authUser.displayName);
-      setUserId(authUser.uid)
+      setUser(authUser?.displayName);
+      setUserId(authUser?.uid)
     }else{
       setUser(null)
     }
   })
   }, [user, userId])
-  console.log(user, userId)
 
 
   useEffect(() => {
@@ -44,7 +43,8 @@ const current = auth.currentUser
     setCurrentUser(current)   
 
   }, [currentUser])
-  console.log(currentUser.displayName, currentUser.uid)
+  //console.log(currentUser.displayName, currentUser.uid)
+  console.log(user)
 
   useEffect(() => {
     const data = query(collection(db, "posts"));
@@ -74,13 +74,16 @@ const current = auth.currentUser
           alt="logo"
           className="app__headerImage"
         />
+        <div className="app__userStatus">
+        {
+        user ? ( <Button onClick={logOut}>Log Out</Button>) : ( <Button onClick={() => setOpen(true)}>Login/Register</Button>)
+       }
+        </div>
       </div>
       <h1>Instagram</h1>
       {/* modal */}
       <div className="app__modal">
-       {
-        user ? ( <Button onClick={logOut}>Sign Out</Button>) : ( <Button onClick={() => setOpen(true)}>Login/Register</Button>)
-       }
+       
         <Modal
           open={open}
           onClose={() => setOpen(false)}
@@ -89,6 +92,7 @@ const current = auth.currentUser
         >
           <Box sx={style}>
             <div className="modal__header">
+              <center>
               <div className="app__header">
                 <img
                   src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
@@ -96,6 +100,7 @@ const current = auth.currentUser
                   className="app__headerImage"
                 />
               </div>
+              </center>
               <div className="form__switchButton">
                {form === "Signup" ? (
                 <center>
@@ -119,10 +124,22 @@ const current = auth.currentUser
           </Box>
         </Modal>
       </div>
+     {
+      user ? (
+        <center>
+           <Profile/>
+      <ImageUpload username={user}/>
+        </center>
+      ) : (
+        <h3 className="app__signInNotice">Sorry you need to be logged in to be able to make a post</h3>
+      )
+      
+     }
       {/* Post */}
       {posts.map(({ post, id }) => (
         <Post key={id} {...post} />
       ))}
+    
     </div>
   );
 }
