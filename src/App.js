@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import { Login, Post, Profile, Signup, Suggestions,Sidebar } from "./components";
+import { Login, Post, Profile, Signup, Suggestions,Sidebar, Online } from "./components";
 import { collection, query, onSnapshot,orderBy } from "firebase/firestore";
 import { auth, db } from "./firebaseConfig";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import Avatar from "@mui/material/Avatar";
 import { onAuthStateChanged } from "firebase/auth";
 export const style = {
   position: "absolute",
@@ -71,6 +70,11 @@ function App() {
       )
     }
       <div className="app__box">
+        {
+          user ? (
+            <Online/>
+          ) : null
+        }
       <div className="app__container">
       {/* modal */}
       <Paper elevation={3}>

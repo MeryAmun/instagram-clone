@@ -8,8 +8,9 @@ import CreateProfile from "./profile/createProfile/CreateProfile";
 import Sidebar from "./sidebar/Sidebar";
 import Suggestions from "./suggestions/Suggestions";
 import Header from "./header/Header";
+import Online from "./online/Online";
 
 
 export {
-    Post,Signup, Login, Profile, CreatePost, EditPost, CreateProfile,Sidebar,Suggestions,Header
+    Post,Signup, Login, Profile, CreatePost, EditPost, CreateProfile,Sidebar,Suggestions,Header,Online
 }

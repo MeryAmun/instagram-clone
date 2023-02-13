@@ -1,0 +1,19 @@
+.online{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 3rem;
+}
+.online__available{
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+margin: 10px;
+}
+
+.online__arrows{
+    background-color: #fff;
+    cursor: pointer;
+    z-index: 15;
+}

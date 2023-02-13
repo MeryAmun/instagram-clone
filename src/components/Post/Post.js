@@ -2,7 +2,6 @@ import React, { useState,useEffect } from 'react';
 import './post.css'
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Avatar from '@mui/material/Avatar';
 import DeleteIcon from '@mui/icons-material/Delete';

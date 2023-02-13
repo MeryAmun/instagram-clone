@@ -10,3 +10,20 @@
     width: 100%;
 
 }
+.suggestion__imageBox{
+    display: flex;
+    justify-content: center;
+}
+.suggestion__name{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 5px;
+
+}
+.suggestion__next{
+    color: gray;
+}
+.suggestion__switch{
+    text-transform: lowercase;
+}

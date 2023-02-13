@@ -36,13 +36,23 @@ const Suggestions = () => {
   return (
     <div className='suggestions'>
         <div className="suggestions__header">
+            <div className="suggestion__imageBox">
             <Avatar
               alt="avatar"
               src={userImage}
               className="post__avatar"
               onClick={() => setOpenProfile(true)}
             />
-            <Button onClick={() => setOpen(true)}>Switch</Button>
+            <div className="suggestion__name">
+            <span className="">
+            <strong>  {user}</strong>
+              </span>
+              <span className="suggestion__next">
+              {user} | 24
+            </span>
+            </div>
+            </div>
+            <Button className='suggestion__switch' onClick={() => setOpen(true)}>Switch</Button>
         </div>
         <div className="suggestions__profileModal">
  {/* Profile Modal */}
