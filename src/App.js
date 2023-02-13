@@ -137,15 +137,14 @@ function App() {
       </div>
     </div>
       </div>
-      <div className="app__suggestionBox">
 {
   user ? (
     <Suggestions/>
   ) : (
-    <Button onClick={() => setOpen(true)}>Login</Button>
+  <div className="app__suggestionBox"> <Button onClick={() => setOpen(true)}>Login</Button></div>
   )
  }
-</div>
+
     </div>
   );
 }

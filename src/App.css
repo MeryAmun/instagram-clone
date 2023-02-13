@@ -11,12 +11,14 @@ background-color: #fafafa;
      
   }
   .app__suggestionBox{
-    border: 1px solid yellowgreen;
     flex: 0.40;
-   height: 100vh;
-   margin-top: 4rem;
+   height: 0vh;
+   margin: 1rem .5rem;
   }
-
+.app__signInNotice{
+  margin-top: 2rem;
+  width: 250px;
+}
   .app__box{
     flex: 0.60;
     margin-left: 10rem;
