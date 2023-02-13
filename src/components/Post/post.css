@@ -75,3 +75,32 @@ transition: background-color  1s;
     background: lightgray;
     /* opacity: 0.8; */
 }
+
+.post__reactions{
+display: flex;
+flex-direction: column;
+justify-content: flex-start;
+align-items: center;
+border: 1px solid red;
+height: 100vh;
+}
+.post__reactionsHeader{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.post__reactionType{
+margin: 10px;
+}
+.post__reactionCount{
+    margin: 10px;
+}
+.post__readComments{
+    display: flex;
+flex-direction: column;
+justify-content: flex-start;
+align-items: center;
+}
+.post__comment{
+
+}

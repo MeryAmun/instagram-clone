@@ -54,6 +54,11 @@ const Suggestions = () => {
             </div>
             <Button className='suggestion__switch' onClick={() => setOpen(true)}>Switch</Button>
         </div>
+        <div className="suggestions__container">
+          <div className="suggestions__header">
+            
+          </div>
+        </div>
         <div className="suggestions__profileModal">
  {/* Profile Modal */}
  <Paper>

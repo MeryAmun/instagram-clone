@@ -11,7 +11,9 @@ justify-content: center;
 align-items: center;
 margin: 10px;
 }
-
+.online__imageContainer{
+    border: 2px gra;
+}
 .online__arrows{
     background-color: #fff;
     cursor: pointer;
