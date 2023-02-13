@@ -2,14 +2,15 @@ import React, { useState, useEffect } from "react";
 import { PhotoCamera } from "@mui/icons-material";
 import { Button, IconButton, TextField } from "@mui/material";
 import { TextareaAutosize } from "@mui/material";
-import "./imageUpload.css";
+import "./createPost.css";
 import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
 import { db, storage } from "../../firebaseConfig";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import {Header } from '../index'
 
-const ImageUpload = ({ username }) => {
+const CreatePost = ({ username }) => {
   const [currentFile, setCurrentFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const [progress, setProgress] = useState(0);
@@ -17,15 +18,6 @@ const ImageUpload = ({ username }) => {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  // useEffect(() => {
-  //   setProgress((oldProgress) => {
-  //     if (oldProgress === 100) {
-  //       return 0;
-  //     }
-  //     const diff = Math.random() * 10;
-  //     return Math.min(oldProgress + diff, 100);
-  //   });
-  // }, []);
 
   const onFileChangeHandler = (e) => {
     setCurrentFile(e.target.files[0]);
@@ -75,6 +67,7 @@ const ImageUpload = ({ username }) => {
 
   return (
     <div className="createPost">
+      <Header/>
       <div className="createPost__header">
         <Box sx={{ width: "15%" }}>
           <LinearProgress variant="determinate" value={progress} />
@@ -159,4 +152,4 @@ const ImageUpload = ({ username }) => {
   );
 };
 
-export default ImageUpload;
+export default CreatePost;

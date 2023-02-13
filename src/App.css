@@ -3,9 +3,30 @@
   }
 
   .app{
-    background-color: #fafafa;
+background-color: #fafafa;
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
     
      
+  }
+  .app__suggestionBox{
+    border: 1px solid yellowgreen;
+    flex: 0.40;
+   height: 100vh;
+   margin-top: 4rem;
+  }
+
+  .app__box{
+    flex: 0.60;
+    margin-left: 10rem;
+  }
+  .app__container{
+    /* margin-left: 8rem; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
   .app__header{
     background-color: white;
@@ -15,10 +36,21 @@
     display: flex;
     justify-content: space-between;
   }
+
+  .app__post{
+    padding: 20px;
+  }
   .form__switchButton{
     display: flex;
   }
 
   .app__signInNotice{
     margin: 1rem;
+  }
+  input{
+    border: 1px solid #fafafa;
+  }
+
+  .app__makePost{
+    margin-top: 4rem;
   }

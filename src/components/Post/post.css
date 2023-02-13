@@ -1,15 +1,23 @@
 .post{
-    background-color: white;
+    /* background-color: white; */
     max-width: 500px;
-    border: 1px solid lightgray;
+    /* border: 1px solid lightgray; */
     margin-bottom: 45px;
+   
 }
-
+.post__middleDot{
+    margin: 5px;
+    color: gray;
+}
+.post__timestamp{
+    color: gray;
+}
 .post__image{
     width: 100%;
     object-fit: contain;
-    border-top: 1px solid lightgray;
-    border-bottom: 1px solid lightgray;
+    /* border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray; */
+    border-radius: 5px;
 }
 
 .post__text{
@@ -49,7 +57,7 @@ font-size: 28px;
 background: #fff;
 color: red;
 cursor: pointer;
-border: 1px solid lightgray;
+/* border: 1px solid lightgray; */
 transition: background 4s ease-in-out 2s;
 }
 .post__editIcon{
@@ -57,7 +65,7 @@ margin: .8rem;
 font-size: 28px;
 color: rgb(31, 43, 219);
 cursor: pointer;
-border: 1px solid lightgray;
+/* border: 1px solid lightgray; */
 transition: background-color  1s;
 }
 .post__deleteIcon:hover{

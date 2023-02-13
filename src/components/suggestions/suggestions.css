@@ -1,0 +1,12 @@
+/* .suggestions{
+    border: 1px solid yellowgreen;
+    flex: 0.40;
+   height: 100vh;
+   margin-top: 4rem;
+} */
+.suggestions__header{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+}

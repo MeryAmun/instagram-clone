@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './styles.css'
 import Button from '@mui/material/Button';
 import { TextField } from "@mui/material";
+import { Header } from '../index'
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../../firebaseConfig';
 
@@ -34,6 +35,9 @@ const Login = () => {
     };
   return (
     <div className='login'>
+      <center>
+        <Header/>
+      </center>
       <div className="login__field">
         <TextField
           type="email"

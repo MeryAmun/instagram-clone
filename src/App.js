@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import { ImageUpload, Login, Post, Profile, Signup } from "./components";
+import { Login, Post, Profile, Signup, Suggestions,Sidebar } from "./components";
 import { collection, query, onSnapshot,orderBy } from "firebase/firestore";
 import { auth, db } from "./firebaseConfig";
 import Box from "@mui/material/Box";
@@ -8,9 +8,8 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Avatar from "@mui/material/Avatar";
-import { onAuthStateChanged, signOut } from "firebase/auth";
-import { TroubleshootOutlined } from "@mui/icons-material";
-const style = {
+import { onAuthStateChanged } from "firebase/auth";
+export const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
@@ -24,7 +23,6 @@ const style = {
 function App() {
   const [posts, setPosts] = useState([]);
   const [open, setOpen] = useState(false);
-  const [openProfile, setOpenProfile] = useState(false);
   const [form, setForm] = useState("Signup");
   const [user, setUser] = useState(null);
   const [userImage, setUserImage] = useState(null);
@@ -63,46 +61,17 @@ function App() {
 
   return (
     <div className="app">
-      {/* Header */}
-      <div className="app__header">
-        <img
-          src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
-          alt="logo"
-          className="app__headerImage"
-        />
-        <div className="app__userStatus">
-          {user ? (
-            <Avatar
-              alt="avatar"
-              src={userImage}
-              className="post__avatar"
-              onClick={() => setOpenProfile(true)}
-            />
-          ) : (
-            <Button onClick={() => setOpen(true)}>Login/Register</Button>
-          )}
-        </div>
-      </div>
-      {/* Profile Modal */}
-      <Paper>
-        <Box>
-          <div className="app__modal">
-            <Modal
-              open={openProfile}
-              onClose={() => setOpenProfile(false)}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
-            >
-              <Box sx={style}>
-                <div className="modal__body">
-                  <Profile />
-                </div>
-              </Box>
-            </Modal>
-          </div>
-        </Box>
-      </Paper>
-
+    {
+      user ? (
+        <Sidebar/>
+      ) :(
+        <h3 className="app__signInNotice">
+          Sorry you need to be logged in to be able to make a post
+        </h3>
+      )
+    }
+      <div className="app__box">
+      <div className="app__container">
       {/* modal */}
       <Paper elevation={3}>
         <Box>
@@ -158,20 +127,25 @@ function App() {
           </div>
         </Box>
       </Paper>
-      {user ? (
-        <>
-          {/* <Profile/> */}
-          <ImageUpload username={user} />
-        </>
-      ) : (
-        <h3 className="app__signInNotice">
-          Sorry you need to be logged in to be able to make a post
-        </h3>
-      )}
-      {/* Post */}
+      <div className="app__posts">
+        {/* Post */}
+      <div className="app__post">
       {posts.map(({ post, id }) => (
         <Post key={id} {...post} uid={id}/>
       ))}
+      </div>
+      </div>
+    </div>
+      </div>
+      <div className="app__suggestionBox">
+{
+  user ? (
+    <Suggestions/>
+  ) : (
+    <Button onClick={() => setOpen(true)}>Login</Button>
+  )
+ }
+</div>
     </div>
   );
 }
