@@ -19,3 +19,12 @@ margin: 10px;
     cursor: pointer;
     z-index: 15;
 }
+
+
+/* ========================media queries =============================================*/
+
+@media screen and (max-width:757px) {
+    .online__available{
+        margin: 3px;
+        }
+}

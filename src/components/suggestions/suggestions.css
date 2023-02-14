@@ -1,8 +1,8 @@
 .suggestions{
-    border: 1px solid yellowgreen;
-    flex: 0.40;
+    flex: 0.45;
    height: 100vh;
    margin-top: 4rem;
+   padding: 1rem;
 }
 .suggestions__header{
     display: flex;
@@ -25,5 +25,28 @@
     color: gray;
 }
 .suggestion__switch{
-    text-transform: lowercase;
+    text-decoration: none;
+    color: rgb(71, 71, 233);
 }
+.suggestions__header{
+    margin: 2rem 0 1rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.suggestion__text{
+    color: gray;
+    font-size: 16px;
+}
+.suggested__link{
+    text-decoration: none;
+    color: rgb(71, 71, 233);
+}
+
+/* ========================media queries =============================================*/
+
+/* @media screen and (max-width:769px) {
+    .suggestions{
+        display: none;
+    }
+} */

@@ -52,11 +52,12 @@ const Suggestions = () => {
             </span>
             </div>
             </div>
-            <Button className='suggestion__switch' onClick={() => setOpen(true)}>Switch</Button>
+            <a href='#' className='suggestion__switch' onClick={() => setOpen(true)}>Switch</a>
         </div>
         <div className="suggestions__container">
           <div className="suggestions__header">
-            
+            <h3 className="suggestion__text">Suggested Followers</h3>
+            <a href='/' className="suggested__link">See More</a>
           </div>
         </div>
         <div className="suggestions__profileModal">

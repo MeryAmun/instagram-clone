@@ -52,6 +52,11 @@ const CreatePost = ({ username }) => {
               caption: caption,
               message: message,
               imageUrl: url,
+              reactionsCount:[
+                {likes: 0 },
+                {shares: 0 },
+                {comments: 0 },
+              ],
               username: username,
             });
             setProgress(0);
@@ -108,7 +113,7 @@ const CreatePost = ({ username }) => {
             </div>
           )}
         </div>
-        <center>
+      
         <div className="imageUpload__caption">
           <TextField
             type="text"
@@ -132,7 +137,7 @@ const CreatePost = ({ username }) => {
             value={message}
           />
         </div>
-        </center>
+    
         <div className="imageUpload__button">
           <Button
             type="button"

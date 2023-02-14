@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import { Login, Post, Profile, Signup, Suggestions,Sidebar, Online } from "./components";
-import { collection, query, onSnapshot,orderBy } from "firebase/firestore";
+import {
+  Login,
+  Post,
+  Profile,
+  Signup,
+  Suggestions,
+  Sidebar,
+  Online,
+} from "./components";
+import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
 import { auth, db } from "./firebaseConfig";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -47,7 +55,7 @@ function App() {
   //console.log(currentUser.displayName, currentUser.uid)
 
   useEffect(() => {
-    const data = query(collection(db, "posts"),orderBy('timestamp', 'desc'));
+    const data = query(collection(db, "posts"), orderBy("timestamp", "desc"));
     onSnapshot(data, (querySnapshot) => {
       setPosts(
         querySnapshot.docs.map((doc) => ({
@@ -60,95 +68,91 @@ function App() {
 
   return (
     <div className="app">
-    {
-      user ? (
-        <Sidebar/>
-      ) :(
+      {user ? (
+        <Sidebar />
+      ) : (
         <h3 className="app__signInNotice">
           Sorry you need to be logged in to be able to make a post
         </h3>
-      )
-    }
+      )}
       <div className="app__box">
-        {
-          user ? (
-            <Online/>
-          ) : null
-        }
-      <div className="app__container">
-      {/* modal */}
-      <Paper elevation={3}>
-        <Box>
-          <div className="app__modal">
-            <Modal
-              open={open}
-              onClose={() => setOpen(false)}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
-            >
-              <Box sx={style}>
-                <div className="modal__header">
-                  <center>
-                    <div className="app__header">
-                      <img
-                        src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
-                        alt="logo"
-                        className="app__headerImage"
-                      />
+        {user ? <Online /> : null}
+        <div className="app__container">
+          {/* modal */}
+          <Paper elevation={3}>
+            <Box>
+              <div className="app__modal">
+                <Modal
+                  open={open}
+                  onClose={() => setOpen(false)}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box sx={style}>
+                    <div className="modal__header">
+                      <center>
+                        <div className="app__header">
+                          <img
+                            src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
+                            alt="logo"
+                            className="app__headerImage"
+                          />
+                        </div>
+                      </center>
+                      <div className="form__switchButton">
+                        {form === "Signup" ? (
+                          <center>
+                            <span>
+                              <strong>Already have an account ?</strong>
+                            </span>
+                            <Button onClick={() => setForm("Login")}>
+                              Login
+                            </Button>
+                          </center>
+                        ) : (
+                          <center>
+                            <span>
+                              <strong>Don't yet have an account ?</strong>
+                            </span>
+                            <Button onClick={() => setForm("Signup")}>
+                              Signup
+                            </Button>
+                          </center>
+                        )}
+                      </div>
                     </div>
-                  </center>
-                  <div className="form__switchButton">
-                    {form === "Signup" ? (
-                      <center>
-                        <span>
-                          <strong>Already have an account ?</strong>
-                        </span>
-                        <Button onClick={() => setForm("Login")}>Login</Button>
-                      </center>
-                    ) : (
-                      <center>
-                        <span>
-                          <strong>Don't yet have an account ?</strong>
-                        </span>
-                        <Button onClick={() => setForm("Signup")}>
-                          Signup
-                        </Button>
-                      </center>
-                    )}
-                  </div>
-                </div>
-                <div className="modal__body">
-                  {form === "Signup" ? (
-                    <Signup />
-                  ) : form === "Login" ? (
-                    <Login />
-                  ) : (
-                    <Profile />
-                  )}
-                </div>
-              </Box>
-            </Modal>
+                    <div className="modal__body">
+                      {form === "Signup" ? (
+                        <Signup />
+                      ) : form === "Login" ? (
+                        <Login />
+                      ) : (
+                        <Profile />
+                      )}
+                    </div>
+                  </Box>
+                </Modal>
+              </div>
+            </Box>
+          </Paper>
+          <div className="app__posts">
+            {/* Post */}
+            <div className="app__post">
+              {posts.map(({ post, id }) => (
+                <Post key={id} {...post} uid={id} />
+              ))}
+            </div>
           </div>
-        </Box>
-      </Paper>
-      <div className="app__posts">
-        {/* Post */}
-      <div className="app__post">
-      {posts.map(({ post, id }) => (
-        <Post key={id} {...post} uid={id}/>
-      ))}
+        </div>
       </div>
-      </div>
-    </div>
-      </div>
-{
-  user ? (
-    <Suggestions/>
-  ) : (
-  <div className="app__suggestionBox"> <Button onClick={() => setOpen(true)}>Login</Button></div>
-  )
- }
-
+      {user ? (
+        <Suggestions />
+      ) : (
+        <div className="app__suggestionBox">
+          {" "}
+          <Button onClick={() => setOpen(true)}>Login</Button>
+        </div>
+      )}
     </div>
   );
 }

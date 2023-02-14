@@ -24,3 +24,12 @@
 margin-right: 10px;
 cursor:pointer;
 }
+
+/* ========================media queries =============================================*/
+
+@media screen and (max-width:757px) {
+  .profile__header{
+      width: 300px;
+  }
+  
+}
