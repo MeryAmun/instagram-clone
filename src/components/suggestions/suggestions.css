@@ -43,6 +43,11 @@
     color: rgb(71, 71, 233);
 }
 
+.suggestion__ProfileAvatar{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+}
 /* ========================media queries =============================================*/
 
 /* @media screen and (max-width:769px) {

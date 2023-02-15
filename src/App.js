@@ -77,70 +77,11 @@ function App() {
     <div className="app">
       {user ? <Sidebar /> : null}
       <div className="app__box">
-        <SmallHeader />
+        <SmallHeader user={user} userImage={userImage} open={open} close={() => setOpen(false)}/>
         {user ? <Online /> : null}
         <div className="app__container">
           {/* modal */}
-          <Paper elevation={3}>
-            <Box>
-              <div className="app__modal">
-                <Modal
-                  open={open}
-                  onClose={() => setOpen(false)}
-                  aria-labelledby="modal-modal-title"
-                  aria-describedby="modal-modal-description"
-                >
-                  <Box sx={style}>
-                    <div className="modal__header">
-                      <center>
-                        <div className="app__header">
-                          <img
-                            src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
-                            alt="logo"
-                            className="app__headerImage"
-                          />
-                        </div>
-                      </center>
-                      <div className="form__switchButton">
-                        {form === "Signup" ? (
-                          <center>
-                            <span>
-                              <strong>Already have an account ?</strong>
-                            </span>
-                            <Button onClick={() => setForm("Login")}>
-                              Login
-                            </Button>
-                          </center>
-                        ) : (
-                          <center>
-                            <span>
-                              <strong>Don't yet have an account ?</strong>
-                            </span>
-                            <Button onClick={() => setForm("Signup")}>
-                              Signup
-                            </Button>
-                          </center>
-                        )}
-                      </div>
-                    </div>
-                    <div className="modal__body">
-                      {form === "Signup" ? (
-                        <center>
-                          {" "}
-                          <Signup />
-                        </center>
-                      ) : (
-                        <center>
-                          {" "}
-                          <Login />
-                        </center>
-                      )}
-                    </div>
-                  </Box>
-                </Modal>
-              </div>
-            </Box>
-          </Paper>
+         
           <div className="app__posts">
             <div className="app__postLeft">
               {/* Post */}
@@ -169,22 +110,9 @@ function App() {
         </div>
       </div>
       {user ? (
-        <Suggestions />
-      ) : (
-        <div className="app__suggestionBox">
-          <center>
-            <div className="app__header">
-              <img
-                src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
-                alt="logo"
-                className="app__headerImage"
-              />
-                <Button onClick={() => setOpen(true)}>Login</Button>
-            </div>
-          </center>{" "}
-        
-        </div>
-      )}
+        <Suggestions user={user} userImage={userImage}/>
+      ) : null
+      }
     </div>
   );
 }

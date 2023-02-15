@@ -46,8 +46,13 @@
 
 .sidebar__iconImage{
   object-fit: contain;
-  width: 28px;
-  height: 28px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+
+}
+.sidebar__profileBox{
+ height: 40px;
 }
 
 

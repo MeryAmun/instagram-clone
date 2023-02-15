@@ -15,6 +15,7 @@ import { style } from "../../App";
 import { Send } from "react-feather";
 import { Heart } from "react-feather";
 import { MessageCircle } from "react-feather";
+import { defaultImage } from "../../data/dummyData";
 
 const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
   const [user, setUser] = useState(null);
@@ -22,11 +23,17 @@ const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
   const [userImage, setUserImage] = useState(null);
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState([]);
-  const [likes, setLikes] = useState();
-  const [likesCount, setLikesCount] = useState(0)
-  const [shares, setShares] = useState();
+  const [likes, setLikes] = useState(0);
+  const [likesCount, setLikesCount] = useState(likes)
+  const [shares, setShares] = useState(0);
+  const [sharesCount, setSharesCount] = useState(shares);
   const [liked, setLiked] = useState(false)
   const [shared, setShared] = useState(false)
+  const [commentLikes, setCommentLikes] = useState()
+  const [commentUid, setCommentUid] = useState(null)
+  const [commentLikesCount, setCommentLikesCount] = useState(commentLikes);
+  const [likedComment, setLikedComment] = useState(false)
+
 
  
 
@@ -42,6 +49,7 @@ const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
     });
   }, [user]);
    
+   //**============GET COMMENTS======================================================================================= */
   useEffect(() => {
 
     if (uid) {
@@ -50,10 +58,14 @@ const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
         orderBy("timestamp", "desc")
       );
       onSnapshot(q, (querySnapshot) => {
-        setComments(querySnapshot.docs.map((doc) => doc.data()));
+        setComments(querySnapshot.docs.map((doc) => ({
+          id:doc.id,
+          text:doc.data()
+        })));
       });
     }
   }, [uid])
+   //**============GET LIKES======================================================================================= */
   useEffect(() => {
 
     if (uid) {
@@ -65,6 +77,8 @@ const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
       });
     }
   }, [uid])
+
+   //**============GETS SHARES COUNT ======================================================================================= */
   useEffect(() => {
 
     if (uid) {
@@ -76,8 +90,20 @@ const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
       });
     }
   }, [uid])
- 
+   //**============GET LIKED COMMENT======================================================================================= */
+  useEffect(() => {
 
+    if (uid) {
+      const q = query(
+        collection(db, "posts", uid, "commentLikes"),
+      );
+      onSnapshot(q, (querySnapshot) => {
+        setCommentLikes(querySnapshot.docs.map((doc) => doc.data()))
+      });
+    }
+  }, [uid])
+ 
+ //**============DELETE POST======================================================================================= */
   const handleDelete = async () => {
     const taskDocRef = doc(db, "posts", uid);
     try {
@@ -87,6 +113,7 @@ const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
     }
   };
 
+  //**============POST COMMENT======================================================================================= */
   const postComment = async (e) => {
     e.preventDefault();
     try {
@@ -100,6 +127,7 @@ const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
       alert(err);
     }
   };
+  //**============TOGGLE LIKE======================================================================================= */
   const toggleLike = async (e) => {
     try {
       await addDoc(collection(db, "posts", uid, "likes"), {
@@ -111,6 +139,40 @@ const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
         setLikesCount(likesCount + 1)
       }
      setLiked((prev) => !prev )
+    } catch (err) {
+      alert(err);
+    }
+  };
+  //**============TOGGLE COMMENT LIKE==========================================================================*/
+
+  const toggleCommentLike = async (e) => {
+    try {
+      await addDoc(collection(db, "posts", uid, "commentLikes"), {
+        numOfCommentLikes: commentLikesCount,
+      });
+      if(uid && likedComment){
+        setCommentLikesCount(commentLikesCount - 1)
+      }else{
+        setCommentLikesCount(commentLikesCount + 1)
+      }
+     setLikedComment((prev) => !prev )
+    } catch (err) {
+      alert(err);
+    }
+  };
+
+  //**============TOGGLE SHARE======================================================================================= */
+  const toggleShare = async (e) => {
+    try {
+      await addDoc(collection(db, "posts", uid, "shares"), {
+        numOfShares: sharesCount,
+      });
+      if(uid && shared){
+        setSharesCount(sharesCount - 1)
+      }else{
+        setSharesCount(sharesCount + 1)
+      }
+     setShared((prev) => !prev )
     } catch (err) {
       alert(err);
     }
@@ -145,10 +207,10 @@ const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
       {/* header plus avatar */}
       <div className="post__headerContainer">
         <div className="post__header">
-          <Avatar alt="avatar" src="" className="post__avatar" />
+          <img alt="avatar" src={userImage ? userImage : defaultImage}className="post__avatar" />
           <h3>{username}</h3>{" "}
           <strong className="post__middleDot">&middot;</strong>
-          <span className="post__timestamp">2d</span>
+          <span className="post__timestamp">{timestamp.seconds}</span>
         </div>
         {user ? (
           <div className="post__actionIcons">
@@ -176,9 +238,9 @@ const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
             <span className="post__reactionCount">{comments.length === 1 ? comments.length + ' comment' : comments.length + ' comments'} </span>
           </div>
           <div className="post__reactionType">
-            <Send size={20}/>
+            <Send size={20} className={shared ? 'post__reactionIconSelected' : ''} onClick={toggleShare}/>
             <br />
-            <span className="post__reactionCount">{shares?.length === 1 ? shares?.length + ' share' : shares?.length + ' shares'} </span>
+            <span className="post__reactionCount">{sharesCount === 1 ? sharesCount + ' share' : sharesCount + ' shares'} </span>
           </div>
           </div>
           <div className="post__message">
@@ -190,15 +252,24 @@ const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
       <div className="post__reactions">
           <div className="post__readComments">
            {
-            comments.map(({text, imageUrl, timestamp}) => (
-             <div className="post__commentBox">
-               <img src={imageUrl} alt="avatar" className="post__commentAvatar" />
-              <span className="post__comment">{text}</span>
+         
+            comments?.map(({text, imageUrl, timestamp},index) => (
+             <div className="post__commentBox" key={index}>
+              <div className="post__commenter">
+              <img src={imageUrl ? imageUrl : defaultImage} alt="avatar" className="post__commentAvatar" />
+              <p className="post__comment">{text.text}</p>
+              </div>
+              <div className="post__reactionType">
+            <Heart size={15} className={likedComment ? 'post__reactionIconSelected' : ''} onClick={toggleCommentLike}/>
+            <span className="post__reactionCount">{likesCount}</span>
+          </div>
              </div>
             ))
            }
           </div>
-          <div>
+          {
+            user ? (
+              <div>
           <form onSubmit={postComment}>
           <input
             type="text"
@@ -212,6 +283,8 @@ const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
           />
           </form>
         </div>
+            ) : null
+          }
       </div>
       {/* end of post reactions */}
     </div>

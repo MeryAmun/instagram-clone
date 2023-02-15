@@ -78,8 +78,7 @@ transition: background-color  1s;
 display: flex;
 flex-direction: column;
 justify-content: flex-start;
-align-items: center;
-border: 1px solid red;
+align-items: flex-start;
 height: 100%;
 margin: 0;
 }
@@ -87,7 +86,6 @@ margin: 0;
     display: flex;
     justify-content: flex-start;
     align-items:center;
-    border: 1px solid yellowgreen;
     
 }
 .post__reactionType{
@@ -101,6 +99,7 @@ cursor: pointer;
     margin: 3px;
 }
 .post__readComments{
+    width: 100%;
     display: flex;
 flex-direction: column;
 justify-content: flex-start;
@@ -116,28 +115,40 @@ font-size: 15px;
 }
 
 .post__commentBox{
+    width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     word-wrap: break-word; 
+}
+.post__commenter{
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
 }
 .post__commentAvatar{
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    margin: 0.8rem;
+    margin: 0.3rem;
+}
+.post__avatar{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
 }
 /* ========================media queries =============================================*/
 
 @media screen and (max-width:757px) {
-    /* .post{
-        width: 300px;
+  .post{
+    margin-top: 1rem;
     }
 
-    .post__image{
+    /* .post__image{
         width: 250px;
         object-fit: contain;
     
         border-radius: 5px;
-    } */
+    }  */
 }

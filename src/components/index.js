@@ -10,8 +10,9 @@ import Suggestions from "./suggestions/Suggestions";
 import Header from "./header/Header";
 import Online from "./online/Online";
 import SmallHeader from "./smallHeader/SmallHeader";
+import ModalComponent from "./Modal/Modal";
 
 
 export {
-    Post,Signup, Login, Profile, CreatePost, EditPost, CreateProfile,Sidebar,Suggestions,Header,Online,SmallHeader
+    Post,Signup, Login, Profile, CreatePost, EditPost, CreateProfile,Sidebar,Suggestions,Header,Online,SmallHeader,ModalComponent
 }

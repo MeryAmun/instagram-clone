@@ -2,45 +2,28 @@ import React, {useState, useEffect} from 'react'
 import './suggestions.css'
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import {Profile,Login } from  '../index'
-import { collection, query, onSnapshot,orderBy } from "firebase/firestore";
 
-import Avatar from "@mui/material/Avatar";
 import { onAuthStateChanged } from "firebase/auth";
 import { style } from '../../App';
 import { auth } from '../../firebaseConfig';
+import { defaultImage } from '../../data/dummyData';
 
 
-const Suggestions = () => {
+const Suggestions = ({user, userImage}) => {
     const [open, setOpen] = useState(false);
     const [openProfile, setOpenProfile] = useState(false);
-    const [user, setUser] = useState(null);
-    const [userImage, setUserImage] = useState(null);
-    const [userId, setUserId] = useState(null);
 
 
-
-    useEffect(() => {
-        onAuthStateChanged(auth, (authUser) => {
-          if (authUser) {
-            setUser(authUser?.displayName);
-            setUserImage(authUser?.photoURL);
-            setUserId(authUser?.uid);
-          } else {
-            setUser(null);
-          }
-        });
-      }, [user, userId]);
   return (
     <div className='suggestions'>
         <div className="suggestions__header">
             <div className="suggestion__imageBox">
-            <Avatar
+            <img
               alt="avatar"
-              src={userImage}
-              className="post__avatar"
+              src={userImage ? userImage : defaultImage}
+              className="suggestion__ProfileAvatar"
               onClick={() => setOpenProfile(true)}
             />
             <div className="suggestion__name">

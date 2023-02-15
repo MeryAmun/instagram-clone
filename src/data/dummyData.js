@@ -42,3 +42,5 @@ export const availableOnline = [
         name:'Muma',img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvFFG-hAuwWCF1wpo8rDXVEfoFI4_MTg0V8Q&usqp=CAU'
     },
 ]
+
+export const defaultImage = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9HN2rybEVpEUpYHEQFLi3ng8Zvy11cnM0ng&usqp=CAU'

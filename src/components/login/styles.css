@@ -1,12 +1,18 @@
 .login__field{
     margin: 15px;
+    padding-right: 40px;
 }
 
 /* ========================media queries =============================================*/
 
 @media screen and (max-width:757px) {
+    .login{
+        width: 400px;
+        padding: 20px;
+    }
     .login__field{
         width: 300px;
+    
     }
    .form__switchButton{
     padding: 1rem;

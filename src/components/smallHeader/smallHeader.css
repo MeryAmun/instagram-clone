@@ -23,6 +23,11 @@
    display: none;
    
 }
+.smallHeader__ProfileAvatar{
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+}
 /* input::placeholder{
     margin-left: 2rem;
 } */
@@ -35,7 +40,7 @@
     display: none;
 }
 .smallHeader__icon{
-   
+   margin-right: 5px;
 }
 
 /* ========================media queries =============================================*/
@@ -46,5 +51,6 @@
         justify-content: center;
         align-items: center;
         border-bottom: 1px solid gray;
+        margin-bottom: 1rem;
     }
 }

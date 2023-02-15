@@ -19,6 +19,7 @@ import {
 import "./sidebar.css";
 import { style } from "../../App";
 import { auth } from "../../firebaseConfig";
+import { defaultImage } from "../../data/dummyData";
 
 const Sidebar = () => {
   const [user, setUser] = useState(null);
@@ -137,12 +138,13 @@ const Sidebar = () => {
           </span>
           <span className="sidebar__linkTitle">Create</span>
         </div>
-        <div className="sidebar__iconBox" onClick={() => setOpenProfile(true)}>
-          <Avatar
+        <div className="sidebar__iconBox sidebar__profileBox" onClick={() => setOpenProfile(true)}>
+          
+  <img
             alt="avatar"
-            src={userImage}
+            src={userImage ? userImage : defaultImage}
             className="sidebar__icon sidebar__iconImage"
-          />
+          /> 
           <span className="sidebar__linkTitle">Profile</span>
         </div>
         <div className="sidebar__iconBox sidebar__iconSmall" onClick={() => setOpen(true)}>
