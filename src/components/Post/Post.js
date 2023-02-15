@@ -23,6 +23,7 @@ const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState([]);
   const [likes, setLikes] = useState();
+  const [likesCount, setLikesCount] = useState(0)
   const [shares, setShares] = useState();
   const [liked, setLiked] = useState(false)
   const [shared, setShared] = useState(false)
@@ -76,7 +77,7 @@ const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
     }
   }, [uid])
  
-  //post__reactionIconSelected
+
   const handleDelete = async () => {
     const taskDocRef = doc(db, "posts", uid);
     try {
@@ -95,6 +96,21 @@ const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
         imageUrl: imageUrl,
       });
       setComment("");
+    } catch (err) {
+      alert(err);
+    }
+  };
+  const toggleLike = async (e) => {
+    try {
+      await addDoc(collection(db, "posts", uid, "likes"), {
+        numOfLikes: likesCount,
+      });
+      if(uid && liked){
+        setLikesCount(likesCount - 1)
+      }else{
+        setLikesCount(likesCount + 1)
+      }
+     setLiked((prev) => !prev )
     } catch (err) {
       alert(err);
     }
@@ -150,9 +166,9 @@ const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
       <div className="post__reactionsContainer">
       <div className="post__reactionsHeader">
           <div className="post__reactionType">
-            <Heart size={20}/>
+            <Heart size={20} className={liked ? 'post__reactionIconSelected' : ''} onClick={toggleLike}/>
             <br />
-            <span className="post__reactionCount">{likes?.length === 1 ? likes?.length + ' like' : likes?.length + ' likes'} </span>
+            <span className="post__reactionCount">{likesCount === 1 ? likesCount + ' like' : likesCount + ' likes'} </span>
           </div>
           <div className="post__reactionType">
             <MessageCircle size={20}/>
