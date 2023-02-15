@@ -65,6 +65,11 @@ input {
 .app__makePost {
   margin-top: 4rem;
 }
+.app__suggestionBox{
+  display: flex;
+ 
+
+}
 
 /* ========================media queries =============================================*/
 
@@ -72,6 +77,7 @@ input {
   .app {
   flex-direction: column;
   width: 100%;
+  height: 100%;
     align-items: center;
 
   }
@@ -82,6 +88,9 @@ input {
 
 
   .suggestions {
+    display: none;
+  }
+  .app__suggestionBox{
     display: none;
   }
 }

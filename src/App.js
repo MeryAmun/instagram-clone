@@ -2,21 +2,18 @@ import React, { useState, useEffect } from "react";
 import InstagramEmbed from "react-instagram-embed";
 import "./App.css";
 import {
-  Login,
   Post,
-  Profile,
   Signup,
+  Login,
   Suggestions,
   Sidebar,
   Online,
   SmallHeader,
+  ModalComponent
 } from "./components";
 import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
 import { auth, db } from "./firebaseConfig";
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
-import Modal from "@mui/material/Modal";
+import{ Button, Box} from "@mui/material";
 import { onAuthStateChanged } from "firebase/auth";
 export const style = {
   position: "absolute",
@@ -32,11 +29,11 @@ export const style = {
 function App() {
   const [posts, setPosts] = useState([]);
   const [open, setOpen] = useState(false);
-  const [form, setForm] = useState("Signup");
   const [user, setUser] = useState(null);
   const [userImage, setUserImage] = useState(null);
   const [userId, setUserId] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
+  const [form, setForm] = useState("Signup");
 
   useEffect(() => {
     onAuthStateChanged(auth, (authUser) => {
@@ -54,7 +51,6 @@ function App() {
     const current = auth.currentUser;
     setCurrentUser(current);
   }, [currentUser]);
-  //console.log(currentUser.displayName, currentUser.uid)
 
   useEffect(() => {
     const data = query(collection(db, "posts"), orderBy("timestamp", "desc"));
@@ -68,11 +64,7 @@ function App() {
     });
   }, []);
 
-  // (
-  //   <h3 className="app__signInNotice">
-  //     Sorry you need to be logged in to be able to make a post
-  //   </h3>
-  // )
+
   return (
     <div className="app">
       {user ? <Sidebar /> : null}
@@ -80,8 +72,6 @@ function App() {
         <SmallHeader user={user} userImage={userImage} open={open} close={() => setOpen(false)}/>
         {user ? <Online /> : null}
         <div className="app__container">
-          {/* modal */}
-         
           <div className="app__posts">
             <div className="app__postLeft">
               {/* Post */}
@@ -111,8 +101,68 @@ function App() {
       </div>
       {user ? (
         <Suggestions user={user} userImage={userImage}/>
-      ) : null
-      }
+      ) : (
+        <div className="app__suggestionBox">
+          
+            <div className="app__header">
+              <img
+                src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
+                alt="logo"
+                className="app__headerImage"
+              />
+              
+            </div>
+            <Button onClick={() => setOpen(true)}>Login</Button>
+            <ModalComponent open={open} close={() => setOpen(false)}>
+          <Box sx={style}>
+            <div className="modal__header">
+                <div className="app__header">
+                  <img
+                    src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
+                    alt="logo"
+                    className="app__headerImage"
+                  />
+                </div>
+              <div className="form__switchButton">
+                {form === "Signup" ? (
+                  <div className="form__switchButtonContainer">
+                    <span>
+                      <strong>Already have an account ?</strong>
+                    </span>
+                    <Button onClick={() => setForm("Login")}>
+                      Login
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="form__switchButtonContainer">
+                    <span>
+                      <strong>Don't yet have an account ?</strong>
+                    </span>
+                    <Button onClick={() => setForm("Signup")}>
+                      Signup
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="modal__body">
+              {form === "Signup" ? (
+                <center>
+                  {" "}
+                  <Signup />
+                </center>
+              ) : (
+                <center>
+                  {" "}
+                  <Login />
+                </center>
+              )}
+            </div>
+          </Box>
+          </ModalComponent>
+        {" "}
+        </div>
+      )}
     </div>
   );
 }

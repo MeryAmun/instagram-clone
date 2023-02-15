@@ -7,7 +7,7 @@ import Avatar from "@mui/material/Avatar";
 import TextField from "@mui/material/TextField";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { collection,query,onSnapshot,orderBy,addDoc, doc, deleteDoc , serverTimestamp} from "firebase/firestore";
+import { collection,query,onSnapshot,orderBy,addDoc, doc, deleteDoc , serverTimestamp, Timestamp} from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { db, auth } from "../../firebaseConfig";
 import EditPost from "./EditPost";
@@ -29,8 +29,7 @@ const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
   const [sharesCount, setSharesCount] = useState(shares);
   const [liked, setLiked] = useState(false)
   const [shared, setShared] = useState(false)
-  const [commentLikes, setCommentLikes] = useState()
-  const [commentUid, setCommentUid] = useState(null)
+  const [commentLikes, setCommentLikes] = useState(0)
   const [commentLikesCount, setCommentLikesCount] = useState(commentLikes);
   const [likedComment, setLikedComment] = useState(false)
 
@@ -60,7 +59,8 @@ const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
       onSnapshot(q, (querySnapshot) => {
         setComments(querySnapshot.docs.map((doc) => ({
           id:doc.id,
-          text:doc.data()
+          text:doc.data(),
+          // timestamp: Timestamp.fromDate(new Date().getSeconds())
         })));
       });
     }
@@ -258,11 +258,16 @@ const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
               <div className="post__commenter">
               <img src={imageUrl ? imageUrl : defaultImage} alt="avatar" className="post__commentAvatar" />
               <p className="post__comment">{text.text}</p>
+              {/* <span>{console.log(timestamp?.timestamp.seconds)}</span> */}
               </div>
-              <div className="post__reactionType">
-            <Heart size={15} className={likedComment ? 'post__reactionIconSelected' : ''} onClick={toggleCommentLike}/>
-            <span className="post__reactionCount">{likesCount}</span>
-          </div>
+            {
+              user ? (
+                <div className="post__reactionType">
+                <Heart size={15} className={likedComment ? 'post__reactionIconSelected' : ''} onClick={toggleCommentLike}/>
+                <span className="post__reactionCount">{commentLikesCount}</span>
+              </div>
+              ) : null
+            }
              </div>
             ))
            }

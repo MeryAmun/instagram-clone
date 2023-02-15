@@ -1,7 +1,6 @@
 import React, { useState, useEffect, Fragment } from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-import Avatar from "@mui/material/Avatar";
 import Modal from "@mui/material/Modal";
 import Drawer from "@mui/material/Drawer";
 import { onAuthStateChanged } from "firebase/auth";
