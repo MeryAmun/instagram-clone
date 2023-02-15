@@ -9,8 +9,9 @@ import Sidebar from "./sidebar/Sidebar";
 import Suggestions from "./suggestions/Suggestions";
 import Header from "./header/Header";
 import Online from "./online/Online";
+import SmallHeader from "./smallHeader/SmallHeader";
 
 
 export {
-    Post,Signup, Login, Profile, CreatePost, EditPost, CreateProfile,Sidebar,Suggestions,Header,Online
+    Post,Signup, Login, Profile, CreatePost, EditPost, CreateProfile,Sidebar,Suggestions,Header,Online,SmallHeader
 }

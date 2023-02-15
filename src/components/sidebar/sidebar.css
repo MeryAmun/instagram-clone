@@ -93,7 +93,7 @@
     margin: 0;
   }
 
-  .sidebar__linkTitle{
+  .sidebar__linkTitle, .sidebar__iconSmall{
     display: none;
   }
   .sidebar__iconImage{

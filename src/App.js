@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import InstagramEmbed from "react-instagram-embed";
 import "./App.css";
 import {
   Login,
@@ -8,6 +9,7 @@ import {
   Suggestions,
   Sidebar,
   Online,
+  SmallHeader,
 } from "./components";
 import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
 import { auth, db } from "./firebaseConfig";
@@ -66,16 +68,16 @@ function App() {
     });
   }, []);
 
+  // (
+  //   <h3 className="app__signInNotice">
+  //     Sorry you need to be logged in to be able to make a post
+  //   </h3>
+  // )
   return (
     <div className="app">
-      {user ? (
-        <Sidebar />
-      ) : (
-        <h3 className="app__signInNotice">
-          Sorry you need to be logged in to be able to make a post
-        </h3>
-      )}
+      {user ? <Sidebar /> : null}
       <div className="app__box">
+        <SmallHeader />
         {user ? <Online /> : null}
         <div className="app__container">
           {/* modal */}
@@ -123,11 +125,15 @@ function App() {
                     </div>
                     <div className="modal__body">
                       {form === "Signup" ? (
-                        <Signup />
-                      ) : form === "Login" ? (
-                        <Login />
+                        <center>
+                          {" "}
+                          <Signup />
+                        </center>
                       ) : (
-                        <Profile />
+                        <center>
+                          {" "}
+                          <Login />
+                        </center>
                       )}
                     </div>
                   </Box>
@@ -136,11 +142,28 @@ function App() {
             </Box>
           </Paper>
           <div className="app__posts">
-            {/* Post */}
-            <div className="app__post">
-              {posts.map(({ post, id }) => (
-                <Post key={id} {...post} uid={id} />
-              ))}
+            <div className="app__postLeft">
+              {/* Post */}
+              <div className="app__post">
+                {posts.map(({ post, id }) => (
+                  <Post key={id} {...post} uid={id} />
+                ))}
+              </div>
+            </div>
+            <div className="app__postRight">
+              <InstagramEmbed
+                clientAccessToken="<appId>|<clientToken>"
+                url="https://www.instagram.com/p/CPqNU32h0H8/"
+                maxWidth={375}
+                hideCaption={false}
+                containerTagName="div"
+                injectScript
+                protocol=""
+                onLoading={() => {}}
+                onSuccess={() => {}}
+                onAfterRender={() => {}}
+                onFailure={() => {}}
+              />
             </div>
           </div>
         </div>
@@ -149,8 +172,17 @@ function App() {
         <Suggestions />
       ) : (
         <div className="app__suggestionBox">
-          {" "}
-          <Button onClick={() => setOpen(true)}>Login</Button>
+          <center>
+            <div className="app__header">
+              <img
+                src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
+                alt="logo"
+                className="app__headerImage"
+              />
+                <Button onClick={() => setOpen(true)}>Login</Button>
+            </div>
+          </center>{" "}
+        
         </div>
       )}
     </div>

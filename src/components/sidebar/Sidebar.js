@@ -96,8 +96,8 @@ const Sidebar = () => {
           <span className="sidebar__linkTitle">Home</span>
         </div>
 
-        <div className="sidebar__iconBox" onClick={() => setOpenDrawer(true)}>
-          <span className="sidebar__icon sidebar__iconSearch">
+        <div className="sidebar__iconBox sidebar__iconSmall" onClick={() => setOpenDrawer(true)}>
+          <span className="sidebar__icon">
             <Search />
           </span>
           <span className="sidebar__linkTitle">Search</span>
@@ -124,7 +124,7 @@ const Sidebar = () => {
           <span className="sidebar__linkTitle">Messages</span>
         </div>
 
-        <div className="sidebar__iconBox">
+        <div className="sidebar__iconBox sidebar__iconSmall">
           <span className="sidebar__icon">
             <Heart />
           </span>
@@ -145,7 +145,7 @@ const Sidebar = () => {
           />
           <span className="sidebar__linkTitle">Profile</span>
         </div>
-        <div className="sidebar__iconBox" onClick={() => setOpen(true)}>
+        <div className="sidebar__iconBox sidebar__iconSmall" onClick={() => setOpen(true)}>
           <span className="sidebar__icon">
             <Menu />
           </span>

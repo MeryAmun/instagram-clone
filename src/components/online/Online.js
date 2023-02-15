@@ -6,16 +6,16 @@ import {
    ArrowRightCircle
   } from "react-feather";
 import { availableOnline } from '../../data/dummyData';
-import { WestRounded } from '@mui/icons-material';
+
 
 const Online = () => {
-    const [limit, setLimit] = useState(availableOnline.slice(0,6))
+    const [limit, setLimit] = useState(availableOnline.slice(0,4))
   return (
     <div className='online'>
        <ArrowLeftCircle className='online__arrows'/>
        {
-        limit.map((user)=> (
-            <div className="online__available">
+        limit.map((user, index)=> (
+            <div className="online__available" key={index}>
       <div className="online__imageContainer">
       <Avatar alt='avatar' src={user.img}
         className='online__image'/>

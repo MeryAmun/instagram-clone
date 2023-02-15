@@ -7,7 +7,7 @@ import Avatar from "@mui/material/Avatar";
 import TextField from "@mui/material/TextField";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { doc, deleteDoc } from "firebase/firestore";
+import { collection,query,onSnapshot,orderBy,addDoc, doc, deleteDoc , serverTimestamp} from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { db, auth } from "../../firebaseConfig";
 import EditPost from "./EditPost";
@@ -20,10 +20,13 @@ const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
   const [user, setUser] = useState(null);
   const [open, setOpen] = useState(false);
   const [userImage, setUserImage] = useState(null);
-  const [comment, setComment] = useState('');
-  const [likesCount, setLikesCount] = useState(0);
-  const [commentsCount, setCommentsCount] = useState(0);
-  const [sharesCount, setSharesCount] = useState(0);
+  const [comments, setComments] = useState([]);
+  const [comment, setComment] = useState([]);
+  const [likes, setLikes] = useState();
+  const [shares, setShares] = useState();
+  const [liked, setLiked] = useState(false)
+  const [shared, setShared] = useState(false)
+
  
 
 
@@ -37,7 +40,43 @@ const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
       }
     });
   }, [user]);
+   
+  useEffect(() => {
 
+    if (uid) {
+      const q = query(
+        collection(db, "posts", uid, "comments"),
+        orderBy("timestamp", "desc")
+      );
+      onSnapshot(q, (querySnapshot) => {
+        setComments(querySnapshot.docs.map((doc) => doc.data()));
+      });
+    }
+  }, [uid])
+  useEffect(() => {
+
+    if (uid) {
+      const q = query(
+        collection(db, "posts", uid, "likes"),
+      );
+      onSnapshot(q, (querySnapshot) => {
+        setLikes(querySnapshot.docs.map((doc) => doc.data()));
+      });
+    }
+  }, [uid])
+  useEffect(() => {
+
+    if (uid) {
+      const q = query(
+        collection(db, "posts", uid, "shares"),
+      );
+      onSnapshot(q, (querySnapshot) => {
+        setShares(querySnapshot.docs.map((doc) => doc.data()));
+      });
+    }
+  }, [uid])
+ 
+  //post__reactionIconSelected
   const handleDelete = async () => {
     const taskDocRef = doc(db, "posts", uid);
     try {
@@ -47,6 +86,19 @@ const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
     }
   };
 
+  const postComment = async (e) => {
+    e.preventDefault();
+    try {
+      await addDoc(collection(db, "posts", uid, "comments"), {
+        timestamp: serverTimestamp(),
+        text: comment,
+        imageUrl: imageUrl,
+      });
+      setComment("");
+    } catch (err) {
+      alert(err);
+    }
+  };
   return (
     <div className="post">
       {/* Profile Modal */}
@@ -84,8 +136,8 @@ const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
         </div>
         {user ? (
           <div className="post__actionIcons">
-            <DeleteIcon className="post__deleteIcon" onClick={handleDelete} />
-            <EditIcon
+            <DeleteIcon fontSize="12px" className="post__deleteIcon" onClick={handleDelete} />
+            <EditIcon fontSize="12px"
               className="post__editIcon"
               onClick={() => setOpen(true)}
             />
@@ -95,46 +147,55 @@ const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
       {/* image */}
       <img src={imageUrl} alt="" className="post__image" />
       {/* username and caption */}
-      <h4 className="post__text">
-        <strong>{username}</strong>: {caption}
-      </h4>
-      <div className="post__message">
-        <p className="post__text">{message}</p>
+      <div className="post__reactionsContainer">
+      <div className="post__reactionsHeader">
+          <div className="post__reactionType">
+            <Heart size={20}/>
+            <br />
+            <span className="post__reactionCount">{likes?.length === 1 ? likes?.length + ' like' : likes?.length + ' likes'} </span>
+          </div>
+          <div className="post__reactionType">
+            <MessageCircle size={20}/>
+            <br />
+            <span className="post__reactionCount">{comments.length === 1 ? comments.length + ' comment' : comments.length + ' comments'} </span>
+          </div>
+          <div className="post__reactionType">
+            <Send size={20}/>
+            <br />
+            <span className="post__reactionCount">{shares?.length === 1 ? shares?.length + ' share' : shares?.length + ' shares'} </span>
+          </div>
+          </div>
+          <div className="post__message">
+        <p className="post__text"><strong>{username}</strong>: {message}</p>
       </div>
+      </div>
+      
       {/* <span className="post__timestamp">{timestamp}</span> */}
       <div className="post__reactions">
-        <div className="post__reactionsHeader">
-          <div className="post__reactionType">
-            <Heart />
-            <span className="post__reactionCount">20</span>
+          <div className="post__readComments">
+           {
+            comments.map(({text, imageUrl, timestamp}) => (
+             <div className="post__commentBox">
+               <img src={imageUrl} alt="avatar" className="post__commentAvatar" />
+              <span className="post__comment">{text}</span>
+             </div>
+            ))
+           }
           </div>
-          <div className="post__reactionType">
-            <MessageCircle />
-            <span className="post__reactionCount">20</span>
-          </div>
-          <div className="post__reactionType">
-            <Send />
-            <span className="post__reactionCount">20</span>
-          </div>
-        </div>
-        <div className="post__readComments">
-            <span>comments</span>
-            <span>comments</span>
-            <span>comments</span>
-            <span>comments</span>
-          </div>
-          <div className="post__comment">
-          <TextField
+          <div>
+          <form onSubmit={postComment}>
+          <input
             type="text"
             name="comment"
+            placeholder="Add a comment..."
             label="comment..."
             onChange={(e) => setComment(e.target.value)}
             value={comment}
             variant="outlined"
             className="post__commentText"
           />
-          <button type="submit">post</button>
-          </div>
+          </form>
+        </div>
       </div>
       {/* end of post reactions */}
     </div>

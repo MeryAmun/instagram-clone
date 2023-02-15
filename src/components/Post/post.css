@@ -52,18 +52,16 @@ cursor:pointer;
 }
 
 .post__deleteIcon{
-margin: .8rem;
-font-size: 28px;
+margin: .3rem;
 background: #fff;
-color: red;
+color: gray;
 cursor: pointer;
 /* border: 1px solid lightgray; */
 transition: background 4s ease-in-out 2s;
 }
 .post__editIcon{
-margin: .8rem;
-font-size: 28px;
-color: rgb(31, 43, 219);
+margin: .3rem;
+color: rgb(10, 10, 10);
 cursor: pointer;
 /* border: 1px solid lightgray; */
 transition: background-color  1s;
@@ -82,18 +80,25 @@ flex-direction: column;
 justify-content: flex-start;
 align-items: center;
 border: 1px solid red;
-height: 100vh;
+height: 100%;
+margin: 0;
 }
 .post__reactionsHeader{
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
+    align-items:center;
+    border: 1px solid yellowgreen;
+    
 }
 .post__reactionType{
-margin: 10px;
+margin: 5px;
+cursor: pointer;
+}
+.post__reactionIconSelected{
+    color: red;
 }
 .post__reactionCount{
-    margin: 10px;
+    margin: 3px;
 }
 .post__readComments{
     display: flex;
@@ -101,6 +106,38 @@ flex-direction: column;
 justify-content: flex-start;
 align-items: center;
 }
+.post__commentText{
+    border-bottom: 1px solid lightgray;
+    outline: none;
+}
 .post__comment{
+word-wrap: break-word;
+font-size: 15px; 
+}
 
+.post__commentBox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    word-wrap: break-word; 
+}
+.post__commentAvatar{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin: 0.8rem;
+}
+/* ========================media queries =============================================*/
+
+@media screen and (max-width:757px) {
+    /* .post{
+        width: 300px;
+    }
+
+    .post__image{
+        width: 250px;
+        object-fit: contain;
+    
+        border-radius: 5px;
+    } */
 }
