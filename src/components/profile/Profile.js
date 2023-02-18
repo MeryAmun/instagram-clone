@@ -1,35 +1,97 @@
 import React, { useState, useEffect } from "react";
 import { auth } from "../../firebaseConfig";
-import Button from "@mui/material/Button";
+import { Button, IconButton } from "@mui/material";
+import Box from "@mui/material/Box";
+import LinearProgress from "@mui/material/LinearProgress";
 import { signOut } from "firebase/auth";
 import "./profile.css";
 import Avatar from '@mui/material/Avatar';
+import { db, storage } from "../../firebaseConfig";
+import { collection, addDoc,serverTimestamp} from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { defaultImage } from "../../data/dummyData";
+import { onAuthStateChanged } from "firebase/auth";
 
-const Profile = () => {
+const Profile = ({profilePicture}) => {
   const [userData, setUserData] = useState();
+  const [currentFile, setCurrentFile] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
+  const [progress, setProgress] = useState(0);
+  const [error, setError] = useState("");
+  const [userId, setUserId] = useState(null);
+  const [profileUrl, setProfileUrl] = useState(null)
+
 
   useEffect(() => {
     const user = auth.currentUser;
     if (user !== null) {
       setUserData(user);
-      // const displayName = user.displayName;
-      // const email = user.email;
-      // const photoURL = user.photoURL;
-      // const emailVerified = user.emailVerified;
-      // const uid = user.uid;
+      setUserId(auth.currentUser.uid)
     }
-  }, [userData]);
-  //console.log(userData)
+  }, [userId]);
 
+  const onFileChangeHandler = (e) => {
+    setCurrentFile(e.target.files[0]);
+    if (e.target.files.length !== 0) {
+      setPreviewImage(URL.createObjectURL(e.target.files[0]));
+    }
+  };
+
+
+  const onHandleUpload = () => {
+    if (!currentFile) {
+      setError("Please choose a file first!");
+    } else {
+      setError("");
+      const storageRef = ref(storage, `/profiles/${currentFile.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, currentFile);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const percent = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          setProgress(percent);
+        },
+        (err) => {
+          const errorMessage = err.message;
+          setError(errorMessage);
+        },
+        async () => {
+          await getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+            addDoc(collection(db, "profiles"), {
+              timestamp: serverTimestamp(),
+              imageUrl: url,
+              currentUser:userId
+            });
+            setProgress(0);
+            setCurrentFile(null)
+            setPreviewImage(null)
+          });
+        }
+      );
+    }
+  };
   const logOut = () => {
     signOut(auth)
       .then(() => {
-        // Sign-out successful.
       })
       .catch((error) => {
-        // An error happened.
+
       });
   };
+
+  
+  useEffect(() => {
+    profilePicture?.map(({ currentUser, imageUrl }) => {
+      if (userId === currentUser) {
+        return setProfileUrl(imageUrl);
+      }
+      if ((imageUrl = "")) {
+        return setProfileUrl(defaultImage);
+      }
+    });
+  }, [userId]);
   return (
     <div className="profile">
       <center>
@@ -44,8 +106,62 @@ const Profile = () => {
       </center>
       <div className="profile__details">
       <div className="profile__header">
-        <Avatar alt='avatar' src={userData?.photoUrl}
+         <div className="createPost__header">
+        <Box sx={{ width: "15%" }}>
+          <LinearProgress variant="determinate" value={progress} />
+        </Box>
+      </div>
+      <form className="profile__form">
+        <div className="profile__formContainer">
+          <div className="image__container">
+            <span className="image_label">Select Photo</span>
+            <IconButton
+              color="primary"
+              aria-label="upload picture"
+              component="label"
+            >
+              <input
+                hidden
+                accept="image/*"
+                type="file"
+                onChange={onFileChangeHandler}
+              />
+            <img alt='avatar' src={profileUrl}
         className='profile__avatar'/>
+            </IconButton>
+          </div>
+          {previewImage && (
+            <div className="my-2">
+              <div>
+                <img
+                  style={{
+                    height: "200px",
+                    width: "200px",
+                    objectFit: "contain",
+                  }}
+                  className="rounded-circle"
+                  src={previewImage}
+                  alt=""
+                />
+              </div>
+            </div>
+          )}
+        </div>
+        <div className="imageUpload__button">
+          <Button
+            type="button"
+            variant="contained"
+            sx={{ width: 350 }}
+            onClick={onHandleUpload}
+            style={{ width: "200px" }}
+          >
+            Post
+          </Button>
+        </div>
+        <div className="imageUpload__error">
+          <span className="text-danger">{error}</span>
+        </div>
+        </form>
     </div>
       <h4 className='profile__text'><strong>Username</strong>: {userData?.displayName}</h4>
       <h4 className='profile__text'><strong>Email</strong>: {userData?.email}</h4>

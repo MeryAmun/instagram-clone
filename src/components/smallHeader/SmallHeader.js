@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Heart, Search, X } from "react-feather";
 import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -7,11 +7,17 @@ import "./smallHeader.css";
 import { defaultImage } from "../../data/dummyData";
 import { style } from "../../App";
 
-const SmallHeader = ({user, userImage}) => {
+const SmallHeader = ({user, profilePicture,userId}) => {
   const [openProfile, setOpenProfile] = useState(false);
   const [form, setForm] = useState("Signup");
+  const [profileUrl, setProfileUrl] = useState(null)
 
 
+  useEffect(() => {
+    profilePicture?.map(({currentUser, imageUrl}) => {
+    return userId === currentUser ? setProfileUrl(imageUrl) : null
+      })
+     }, [userId]);
 
   return (
     <div className="smallHeader">
@@ -39,7 +45,7 @@ const SmallHeader = ({user, userImage}) => {
           <div className="suggestion__imageBox">
             <img
               alt="avatar"
-              src={userImage ? userImage : defaultImage}
+              src={profileUrl ? profileUrl : defaultImage}
               className="smallHeader__ProfileAvatar"
               onClick={() => setOpenProfile(true)}
             />

@@ -1,5 +1,7 @@
-
-
+.profile__form,
+  .profile__formContainer{
+  width: 100%;
+}
 
 .profile__header{
     background-color: white;
@@ -20,9 +22,16 @@
     align-items: center;
     padding: 20px;
 }
+.image__container{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .profile__avatar{
-margin-right: 10px;
-cursor:pointer;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
 }
 
 /* ========================media queries =============================================*/

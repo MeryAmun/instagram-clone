@@ -70,7 +70,24 @@ input {
  
 
 }
-
+.app__login{
+  margin-top: 1rem;
+  border-radius: 10px;
+  width: 400px;
+  height: 100%;
+  position: fixed;
+  top: 0px;
+  right: 10px;
+}
+.app__loginHeader{
+  object-fit: contain;
+  width: 80%;
+  margin-left: 20px;
+  border: 1px solid lightgray;
+  display: flex;
+  justify-content: center;
+  padding: 10px 0px;
+}
 /* ========================media queries =============================================*/
 
 @media screen and (max-width:757px) {

@@ -8,7 +8,6 @@ import TextField from "@mui/material/TextField";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { collection,query,onSnapshot,orderBy,addDoc, doc, deleteDoc , serverTimestamp, Timestamp} from "firebase/firestore";
-import { onAuthStateChanged } from "firebase/auth";
 import { db, auth } from "../../firebaseConfig";
 import EditPost from "./EditPost";
 import { style } from "../../App";
@@ -16,11 +15,12 @@ import { Send } from "react-feather";
 import { Heart } from "react-feather";
 import { MessageCircle } from "react-feather";
 import { defaultImage } from "../../data/dummyData";
+import { onAuthStateChanged } from "firebase/auth";
 
-const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
-  const [user, setUser] = useState(null);
+const Comment = ({ imageUrl, username, message,userId, uid, timestamp, userImageUrl,profilePicture }) => {
   const [open, setOpen] = useState(false);
-  const [userImage, setUserImage] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null)
+  const [currentUserId, setCurrentUserId] = useState(null)
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState([]);
   const [likes, setLikes] = useState(0);
@@ -31,23 +31,51 @@ const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
   const [shared, setShared] = useState(false)
   const [commentLikes, setCommentLikes] = useState(0)
   const [commentLikesCount, setCommentLikesCount] = useState(commentLikes);
-  const [likedComment, setLikedComment] = useState(false)
+  const [likedComment, setLikedComment] = useState(false);
+  const [profileUrl, setProfileUrl] = useState(null);
 
 
- 
-
+  /**=======================GET PROFILE PICTURE========================== */
 
   useEffect(() => {
-    onAuthStateChanged(auth, (authUser) => {
-      if (authUser) {
-        setUser(authUser?.displayName);
-        setUserImage(authUser?.photoURL);
-      } else {
-        setUser(null);
+    profilePicture?.map(({ currentUser, imageUrl }) => {
+      if (currentUser === currentUser) {
+        return setProfileUrl(imageUrl);
+      }
+      if ((imageUrl = "")) {
+        return setProfileUrl(defaultImage);
       }
     });
-  }, [user]);
-   
+  }, [currentUserId]);
+
+
+   useEffect(() => {
+    onAuthStateChanged(auth, (authUser) => {
+      if (authUser) {
+        setCurrentUserId(authUser?.uid);
+        setCurrentUser(authUser.displayName)
+      } else {
+        setCurrentUserId(null);
+        setCurrentUser(null)
+      }
+    });
+  }, [currentUserId]);
+  
+
+  /**========================TIMESTAMP=================================== */
+ let newTimestamp;
+ const convertDate = (time) =>  {
+    //time should be server timestamp seconds only
+    let dateInMillis = time * 1000
+    let date = new Date(dateInMillis)
+  newTimestamp = date.toDateString();
+    let myDay = date.toLocaleDateString()
+    let myDate = date.toLocaleDateString()
+    let myTime = date.toLocaleTimeString()
+    myDate = myDate.replaceAll('/', '-')
+    return  myDate + " " + myTime
+    }
+   convertDate(timestamp)
    //**============GET COMMENTS======================================================================================= */
   useEffect(() => {
 
@@ -64,7 +92,7 @@ const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
         })));
       });
     }
-  }, [uid])
+  }, [uid,username])
    //**============GET LIKES======================================================================================= */
   useEffect(() => {
 
@@ -105,9 +133,9 @@ const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
  
  //**============DELETE POST======================================================================================= */
   const handleDelete = async () => {
-    const taskDocRef = doc(db, "posts", uid);
+    const postDocRef = doc(db, "posts", uid);
     try {
-      await deleteDoc(taskDocRef);
+      await deleteDoc(postDocRef);
     } catch (err) {
       alert(err);
     }
@@ -120,7 +148,9 @@ const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
       await addDoc(collection(db, "posts", uid, "comments"), {
         timestamp: serverTimestamp(),
         text: comment,
-        imageUrl: imageUrl,
+        commentBy:currentUser,
+        imageUrl: profileUrl,
+        userId:currentUserId
       });
       setComment("");
     } catch (err) {
@@ -193,8 +223,6 @@ const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
                 <div className="modal__body">
                   <EditPost
                     imageUrl={imageUrl}
-                    caption={caption}
-                    username={username}
                     message={message}
                     uid={uid}
                   />
@@ -207,12 +235,12 @@ const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
       {/* header plus avatar */}
       <div className="post__headerContainer">
         <div className="post__header">
-          <img alt="avatar" src={userImage ? userImage : defaultImage}className="post__avatar" />
+          <img alt="avatar" src={userImageUrl}className="post__avatar" />
           <h3>{username}</h3>{" "}
           <strong className="post__middleDot">&middot;</strong>
-          <span className="post__timestamp">{timestamp.seconds}</span>
+          <span className="post__timestamp">{newTimestamp}</span>
         </div>
-        {user ? (
+        {currentUser && currentUserId === userId ? (
           <div className="post__actionIcons">
             <DeleteIcon fontSize="12px" className="post__deleteIcon" onClick={handleDelete} />
             <EditIcon fontSize="12px"
@@ -253,15 +281,17 @@ const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
           <div className="post__readComments">
            {
          
-            comments?.map(({text, imageUrl, timestamp},index) => (
+            comments?.map(({text:{imageUrl,text,commentBy}},index) => (
              <div className="post__commentBox" key={index}>
               <div className="post__commenter">
-              <img src={imageUrl ? imageUrl : defaultImage} alt="avatar" className="post__commentAvatar" />
-              <p className="post__comment">{text.text}</p>
+              <img src={imageUrl} alt="avatar" className="post__commentAvatar" />
+              <p className="post__comment">
+                <span><strong>{commentBy}</strong></span><br />
+                {text}</p>
               {/* <span>{console.log(timestamp?.timestamp.seconds)}</span> */}
               </div>
             {
-              user ? (
+              currentUser ? (
                 <div className="post__reactionType">
                 <Heart size={15} className={likedComment ? 'post__reactionIconSelected' : ''} onClick={toggleCommentLike}/>
                 <span className="post__reactionCount">{commentLikesCount}</span>
@@ -273,7 +303,7 @@ const Comment = ({ imageUrl, caption, username, message, uid, timestamp }) => {
            }
           </div>
           {
-            user ? (
+            currentUser ? (
               <div>
           <form onSubmit={postComment}>
           <input

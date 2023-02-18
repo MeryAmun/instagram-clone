@@ -11,10 +11,27 @@ import { auth } from '../../firebaseConfig';
 import { defaultImage } from '../../data/dummyData';
 
 
-const Suggestions = ({user, userImage}) => {
+const Suggestions = ({user,  profilePicture,userId}) => {
     const [open, setOpen] = useState(false);
     const [openProfile, setOpenProfile] = useState(false);
+    const [profileUrl, setProfileUrl] = useState(null);
 
+
+    useEffect(() => {
+      profilePicture?.map(({currentUser, imageUrl}) => {
+        if (userId === currentUser) {
+          return setProfileUrl(imageUrl);
+        }
+        if ((imageUrl = "")) {
+          return setProfileUrl(defaultImage);
+        }
+      })
+       }, [userId]);
+
+    // const toggleProfile = () => {
+    //   if(modalContent === 'Profile')
+
+    // }
 
   return (
     <div className='suggestions'>
@@ -22,7 +39,7 @@ const Suggestions = ({user, userImage}) => {
             <div className="suggestion__imageBox">
             <img
               alt="avatar"
-              src={userImage ? userImage : defaultImage}
+              src={profileUrl}
               className="suggestion__ProfileAvatar"
               onClick={() => setOpenProfile(true)}
             />
@@ -56,7 +73,7 @@ const Suggestions = ({user, userImage}) => {
             >
               <Box sx={style}>
                 <div className="modal__body">
-                  <Profile/>
+                  <Profile user={user}/>
                 </div>
               </Box>
             </Modal>

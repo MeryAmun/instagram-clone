@@ -15,6 +15,7 @@ import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
 import { auth, db } from "./firebaseConfig";
 import{ Button, Box} from "@mui/material";
 import { onAuthStateChanged } from "firebase/auth";
+import { defaultImage } from "./data/dummyData";
 export const style = {
   position: "absolute",
   top: "50%",
@@ -31,9 +32,11 @@ function App() {
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [userImage, setUserImage] = useState(null);
+  const [profileImageUrls, setProfileImageUrls] = useState([]);
   const [userId, setUserId] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [form, setForm] = useState("Signup");
+
 
   useEffect(() => {
     onAuthStateChanged(auth, (authUser) => {
@@ -63,13 +66,31 @@ function App() {
       );
     });
   }, []);
+  useEffect(() => {
+    const data = query(collection(db, "profiles"), orderBy("timestamp", "desc"));
+    onSnapshot(data, (querySnapshot) => {
+      setProfileImageUrls(
+        querySnapshot.docs.map((doc) =>  doc.data(),
+      )
+      );
+    });
+  }, []);
+
+
 
 
   return (
     <div className="app">
-      {user ? <Sidebar /> : null}
+      {user ? <Sidebar profilePicture={profileImageUrls}  user={user} userId={userId}/> : null}
       <div className="app__box">
-        <SmallHeader user={user} userImage={userImage} open={open} close={() => setOpen(false)}/>
+        <SmallHeader 
+       userImage={userImage}
+        open={open} 
+        close={() => setOpen(false)} 
+        profilePicture={profileImageUrls}
+         user={user} 
+         userId={userId}
+      />
         {user ? <Online /> : null}
         <div className="app__container">
           <div className="app__posts">
@@ -77,7 +98,7 @@ function App() {
               {/* Post */}
               <div className="app__post">
                 {posts.map(({ post, id }) => (
-                  <Post key={id} {...post} uid={id} />
+                  <Post key={id} {...post} uid={id} profilePicture={profileImageUrls}/>
                 ))}
               </div>
             </div>
@@ -100,7 +121,12 @@ function App() {
         </div>
       </div>
       {user ? (
-        <Suggestions user={user} userImage={userImage}/>
+        <Suggestions 
+         user={user}
+        userImage={userImage} 
+        userId={userId}
+        profilePicture={profileImageUrls} 
+        />
       ) : (
         <div className="app__suggestionBox">
           
@@ -112,11 +138,12 @@ function App() {
               />
               
             </div>
-            <Button onClick={() => setOpen(true)}>Login</Button>
-            <ModalComponent open={open} close={() => setOpen(false)}>
-          <Box sx={style}>
+            {/* <Button onClick={() => setOpen(true)}>Login</Button> */}
+            {/* <ModalComponent open={open} close={() => setOpen(false)}> */}
+         <div className="app__login">
+         <Box>
             <div className="modal__header">
-                <div className="app__header">
+                <div className="app__loginHeader">
                   <img
                     src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
                     alt="logo"
@@ -159,7 +186,8 @@ function App() {
               )}
             </div>
           </Box>
-          </ModalComponent>
+         </div>
+          {/* </ModalComponent> */}
         {" "}
         </div>
       )}

@@ -20,23 +20,32 @@ import { style } from "../../App";
 import { auth } from "../../firebaseConfig";
 import { defaultImage } from "../../data/dummyData";
 
-const Sidebar = () => {
-  const [user, setUser] = useState(null);
+const Sidebar = ({ profilePicture, user }) => {
+const [userId, setUserId] = useState(null);
   const [open, setOpen] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
-  const [userImage, setUserImage] = useState(null);
+  const [profileUrl, setProfileUrl] = useState(null);
 
   useEffect(() => {
     onAuthStateChanged(auth, (authUser) => {
       if (authUser) {
-        setUser(authUser?.displayName);
-        setUserImage(authUser?.photoURL);
+        setUserId(authUser?.uid);
       } else {
-        setUser(null);
+        setUserId(null);
       }
     });
-  }, [user]);
+  }, [userId]);
+  useEffect(() => {
+    profilePicture?.map(({ currentUser, imageUrl }) => {
+      if (userId === currentUser) {
+        return setProfileUrl(imageUrl);
+      }
+      if ((imageUrl = "")) {
+        return setProfileUrl(defaultImage);
+      }
+    });
+  }, [userId]);
 
   return (
     <div className="sidebar">
@@ -53,9 +62,9 @@ const Sidebar = () => {
               >
                 <Box sx={style}>
                   <div className="modal__body">
-                  <center>
-                  <Profile/>
-                  </center>
+                    <center>
+                      <Profile profilePicture={profilePicture} user={userId} />
+                    </center>
                   </div>
                 </Box>
               </Modal>
@@ -75,9 +84,13 @@ const Sidebar = () => {
               >
                 <Box sx={style}>
                   <div className="modal__body">
-                  <center>
-                  <CreatePost />
-                  </center>
+                    <center>
+                      <CreatePost
+                        username={user}
+                        userId={userId}
+                        profileUrl={profileUrl}
+                      />
+                    </center>
                   </div>
                 </Box>
               </Modal>
@@ -96,7 +109,10 @@ const Sidebar = () => {
           <span className="sidebar__linkTitle">Home</span>
         </div>
 
-        <div className="sidebar__iconBox sidebar__iconSmall" onClick={() => setOpenDrawer(true)}>
+        <div
+          className="sidebar__iconBox sidebar__iconSmall"
+          onClick={() => setOpenDrawer(true)}
+        >
           <span className="sidebar__icon">
             <Search />
           </span>
@@ -137,16 +153,21 @@ const Sidebar = () => {
           </span>
           <span className="sidebar__linkTitle">Create</span>
         </div>
-        <div className="sidebar__iconBox sidebar__profileBox" onClick={() => setOpenProfile(true)}>
-          
-  <img
+        <div
+          className="sidebar__iconBox sidebar__profileBox"
+          onClick={() => setOpenProfile(true)}
+        >
+          <img
             alt="avatar"
-            src={userImage ? userImage : defaultImage}
+            src={profileUrl}
             className="sidebar__icon sidebar__iconImage"
-          /> 
+          />
           <span className="sidebar__linkTitle">Profile</span>
         </div>
-        <div className="sidebar__iconBox sidebar__iconSmall" onClick={() => setOpen(true)}>
+        <div
+          className="sidebar__iconBox sidebar__iconSmall"
+          onClick={() => setOpen(true)}
+        >
           <span className="sidebar__icon">
             <Menu />
           </span>

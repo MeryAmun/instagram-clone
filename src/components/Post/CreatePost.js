@@ -10,11 +10,11 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import {Header } from '../index'
 
-const CreatePost = ({ username }) => {
+const CreatePost = ({ username,userId,profileUrl}) => {
   const [currentFile, setCurrentFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const [progress, setProgress] = useState(0);
-  const [caption, setCaption] = useState("");
+  // const [caption, setCaption] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
@@ -49,19 +49,14 @@ const CreatePost = ({ username }) => {
           await getDownloadURL(uploadTask.snapshot.ref).then((url) => {
             addDoc(collection(db, "posts"), {
               timestamp: serverTimestamp(),
-              caption: caption,
               message: message,
               imageUrl: url,
-              reactionsCount:[
-                {likes: 0 },
-                {shares: 0 },
-                {comments: 0 },
-              ],
               username: username,
+              userId:userId,
+              userImageUrl:profileUrl
             });
             setProgress(0);
             setCurrentFile(null)
-            setCaption('')
             setMessage('')
             setPreviewImage(null)
           });
@@ -114,7 +109,7 @@ const CreatePost = ({ username }) => {
           )}
         </div>
       
-        <div className="imageUpload__caption">
+        {/* <div className="imageUpload__caption">
           <TextField
             type="text"
             name="caption"
@@ -124,13 +119,13 @@ const CreatePost = ({ username }) => {
             variant="outlined"
             className="imageUpload__caption"
           />
-        </div>
+        </div> */}
         <div className="imageUpload__messageContainer">
           <TextareaAutosize
             aria-label="minimum height"
             minRows={6}
             cols={10}
-            placeholder="Message"
+            placeholder="What's on your mind?"
             className="imageUpload__message"
             name="message"
             onChange={(e) => setMessage(e.target.value)}
