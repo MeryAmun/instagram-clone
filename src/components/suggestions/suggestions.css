@@ -1,7 +1,7 @@
 .suggestions{
     flex: 0.45;
    height: 100vh;
-   margin-top: 4rem;
+   /* margin-top: 6rem; */
    padding: 1rem;
 }
 .suggestions__header{

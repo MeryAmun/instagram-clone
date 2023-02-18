@@ -22,6 +22,7 @@ import { defaultImage } from "../../data/dummyData";
 
 const Sidebar = ({ profilePicture, user }) => {
 const [userId, setUserId] = useState(null);
+const [currentUser, setCurrentUser] = useState(null)
   const [open, setOpen] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -31,8 +32,10 @@ const [userId, setUserId] = useState(null);
     onAuthStateChanged(auth, (authUser) => {
       if (authUser) {
         setUserId(authUser?.uid);
+        setCurrentUser(authUser?.displayName)
       } else {
         setUserId(null);
+        setCurrentUser(null)
       }
     });
   }, [userId]);
@@ -86,7 +89,7 @@ const [userId, setUserId] = useState(null);
                   <div className="modal__body">
                     <center>
                       <CreatePost
-                        username={user}
+                        username={currentUser}
                         userId={userId}
                         profileUrl={profileUrl}
                       />

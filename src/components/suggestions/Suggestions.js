@@ -73,7 +73,7 @@ const Suggestions = ({user,  profilePicture,userId}) => {
             >
               <Box sx={style}>
                 <div className="modal__body">
-                  <Profile user={user}/>
+                  <Profile user={user} profilePicture={profilePicture}/>
                 </div>
               </Box>
             </Modal>

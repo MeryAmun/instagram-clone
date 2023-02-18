@@ -35,20 +35,6 @@ const Comment = ({ imageUrl, username, message,userId, uid, timestamp, userImage
   const [profileUrl, setProfileUrl] = useState(null);
 
 
-  /**=======================GET PROFILE PICTURE========================== */
-
-  useEffect(() => {
-    profilePicture?.map(({ currentUser, imageUrl }) => {
-      if (currentUser === currentUser) {
-        return setProfileUrl(imageUrl);
-      }
-      if ((imageUrl = "")) {
-        return setProfileUrl(defaultImage);
-      }
-    });
-  }, [currentUserId]);
-
-
    useEffect(() => {
     onAuthStateChanged(auth, (authUser) => {
       if (authUser) {
@@ -60,6 +46,19 @@ const Comment = ({ imageUrl, username, message,userId, uid, timestamp, userImage
       }
     });
   }, [currentUserId]);
+
+    /**=======================GET PROFILE PICTURE========================== */
+
+    useEffect(() => {
+      profilePicture?.map(({ currentUser, imageUrl }) => {
+        if (currentUserId === currentUser) {
+          return setProfileUrl(imageUrl);
+        }
+        if ((imageUrl = "")) {
+          return setProfileUrl(defaultImage);
+        }
+      });
+    }, [currentUserId,currentUser]);
   
 
   /**========================TIMESTAMP=================================== */
