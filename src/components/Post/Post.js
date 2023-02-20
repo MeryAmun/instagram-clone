@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import "./post.css";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -33,6 +33,7 @@ const Comment = ({ imageUrl, username, message,userId, uid, timestamp, userImage
   const [commentLikesCount, setCommentLikesCount] = useState(commentLikes);
   const [likedComment, setLikedComment] = useState(false);
   const [profileUrl, setProfileUrl] = useState(null);
+  const commentRef = useRef()
 
 
    useEffect(() => {
@@ -174,7 +175,7 @@ const Comment = ({ imageUrl, username, message,userId, uid, timestamp, userImage
   };
   //**============TOGGLE COMMENT LIKE==========================================================================*/
 
-  const toggleCommentLike = async (e) => {
+  const toggleCommentLike = async () => {
     try {
       await addDoc(collection(db, "posts", uid, "commentLikes"), {
         numOfCommentLikes: commentLikesCount,
@@ -206,6 +207,9 @@ const Comment = ({ imageUrl, username, message,userId, uid, timestamp, userImage
       alert(err);
     }
   };
+
+
+  console.log(comments)
   return (
     <div className="post">
       {/* Profile Modal */}
@@ -223,6 +227,7 @@ const Comment = ({ imageUrl, username, message,userId, uid, timestamp, userImage
                   <EditPost
                     imageUrl={imageUrl}
                     message={message}
+                    userId={userId}
                     uid={uid}
                   />
                 </div>
@@ -292,7 +297,7 @@ const Comment = ({ imageUrl, username, message,userId, uid, timestamp, userImage
             {
               currentUser ? (
                 <div className="post__reactionType">
-                <Heart size={15} className={likedComment ? 'post__reactionIconSelected' : ''} onClick={toggleCommentLike}/>
+                <Heart size={15} className={likedComment ? 'post__reactionIconSelected' : ''} onClick={toggleCommentLike} ref={commentRef}/>
                 <span className="post__reactionCount">{commentLikesCount}</span>
               </div>
               ) : null

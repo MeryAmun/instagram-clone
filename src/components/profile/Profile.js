@@ -19,7 +19,8 @@ const Profile = ({profilePicture}) => {
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState("");
   const [userId, setUserId] = useState(null);
-  const [profileUrl, setProfileUrl] = useState(null)
+  const [profileUrl, setProfileUrl] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null)
 
 
   useEffect(() => {
@@ -27,8 +28,9 @@ const Profile = ({profilePicture}) => {
     if (user !== null) {
       setUserData(user);
       setUserId(auth.currentUser.uid)
+      setCurrentUser(auth.currentUser.displayName)
     }
-  }, [userId]);
+  }, [userId,currentUser]);
 
   const onFileChangeHandler = (e) => {
     setCurrentFile(e.target.files[0]);
@@ -37,7 +39,7 @@ const Profile = ({profilePicture}) => {
     }
   };
 
-
+/**==================UPLOAD PHOTO */
   const onHandleUpload = () => {
     if (!currentFile) {
       setError("Please choose a file first!");
@@ -72,6 +74,43 @@ const Profile = ({profilePicture}) => {
       );
     }
   };
+
+  /**=====================UPDATE PHOTO================================= */
+  const onHandleUpdate = () => {
+    // if (!currentFile) {
+    //   setError("Please choose a file first!");
+    // } else {
+    //   setError("");
+    //   const storageRef = ref(storage, `/profiles/${currentFile.name}`);
+    //   const uploadTask = uploadBytesResumable(storageRef, currentFile);
+    //   uploadTask.on(
+    //     "state_changed",
+    //     (snapshot) => {
+    //       const percent = Math.round(
+    //         (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+    //       );
+    //       setProgress(percent);
+    //     },
+    //     (err) => {
+    //       const errorMessage = err.message;
+    //       setError(errorMessage);
+    //     },
+    //     async () => {
+    //       await getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+    //         addDoc(collection(db, "profiles"), {
+    //           timestamp: serverTimestamp(),
+    //           imageUrl: url,
+    //           currentUser:userId
+    //         });
+    //         setProgress(0);
+    //         setCurrentFile(null)
+    //         setPreviewImage(null)
+    //       });
+    //     }
+    //   );
+    //}
+  };
+  /**===============LOGOUT=================== */
   const logOut = () => {
     signOut(auth)
       .then(() => {
@@ -104,14 +143,16 @@ const Profile = ({profilePicture}) => {
           <Button onClick={logOut}>Log Out</Button>
         </div>
       </center>
-      <div className="profile__details">
+      <div className="profile__detailsBox">
       <div className="profile__header">
          <div className="createPost__header">
-        <Box sx={{ width: "15%" }}>
-          <LinearProgress variant="determinate" value={progress} />
-        </Box>
-      </div>
-      <form className="profile__form">
+       {
+        currentFile ? ( <Box sx={{ width: "100%", margin:'10px 0px' }}>
+        <LinearProgress variant="determinate" value={progress} />
+      </Box>
+      ) : null
+       }
+        <form className="profile__form">
         <div className="profile__formContainer">
           <div className="image__container">
             <span className="image_label">Select Photo</span>
@@ -147,7 +188,9 @@ const Profile = ({profilePicture}) => {
             </div>
           )}
         </div>
-        <div className="imageUpload__button">
+        {
+          profileUrl ? (
+            <div className="imageUpload__button">
           <Button
             type="button"
             variant="contained"
@@ -155,16 +198,34 @@ const Profile = ({profilePicture}) => {
             onClick={onHandleUpload}
             style={{ width: "200px" }}
           >
-            Post
+            update photo
           </Button>
         </div>
+          ) : (
+            <div className="imageUpload__button">
+          <Button
+            type="button"
+            variant="contained"
+            sx={{ width: 350 }}
+            onClick={onHandleUpdate}
+            style={{ width: "200px" }}
+          >
+           upload photo
+          </Button>
+        </div>
+          )
+        }
         <div className="imageUpload__error">
           <span className="text-danger">{error}</span>
         </div>
         </form>
+      </div>
+      
     </div>
-      <h4 className='profile__text'><strong>Username</strong>: {userData?.displayName}</h4>
+<div className="profile__details">
+<h4 className='profile__text'><strong>Username</strong>: {userData?.displayName}</h4>
       <h4 className='profile__text'><strong>Email</strong>: {userData?.email}</h4>
+</div>
       </div>
     </div>
   );

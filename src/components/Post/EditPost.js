@@ -5,31 +5,42 @@ import { TextareaAutosize } from "@mui/material";
 import "./createPost.css";
 import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
-import { db, storage } from "../../firebaseConfig";
+import { auth, db, storage } from "../../firebaseConfig";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import {
   collection,
   addDoc,
   updateDoc,
-  serverTimestamp,
   doc,
 } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 
-const EditPost = ({ imageUrl, caption, message, uid }) => {
+const EditPost = ({ imageUrl, message, uid,userId }) => {
   const [currentFile, setCurrentFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const [progress, setProgress] = useState(0);
-  const [newCaption, setNewCaption] = useState(caption);
   const [newMessage, setNewMessage] = useState(message);
   const [newUrl, setNewUrl] = useState(imageUrl);
   const [error, setError] = useState("");
+  const [currentUserId, setCurrentUserId] = useState(null)
+
+  useEffect(() => {
+onAuthStateChanged(auth,(authUser) => {
+  if (authUser) {
+    setCurrentUserId(authUser?.uid);
+  } else {
+    setCurrentUserId(null);
+  }
+  })
+  }, [])
+  
 
   const handleUpdate = async (e) => {
     e.preventDefault();
     const taskDocRef = doc(db, "posts", uid);
+   if(uid && currentUserId === userId){
     try {
       await updateDoc(taskDocRef, {
-        caption: newCaption,
         message: newMessage,
         imageUrl: newUrl,
       });
@@ -37,6 +48,7 @@ const EditPost = ({ imageUrl, caption, message, uid }) => {
     } catch (err) {
       alert(err);
     }
+   }
   };
   const onFileChangeHandler = (e) => {
     setCurrentFile(e.target.files[0]);
@@ -123,7 +135,7 @@ const EditPost = ({ imageUrl, caption, message, uid }) => {
           )}
         </div>
         <center>
-          <div className="imageUpload__caption">
+          {/* <div className="imageUpload__caption">
             <TextField
               type="text"
               name="caption"
@@ -133,7 +145,7 @@ const EditPost = ({ imageUrl, caption, message, uid }) => {
               variant="outlined"
               className="imageUpload__caption"
             />
-          </div>
+          </div> */}
           <div className="imageUpload__messageContainer">
             <TextareaAutosize
               aria-label="minimum height"

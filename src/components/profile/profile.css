@@ -1,7 +1,14 @@
-.profile__form,
+/* .profile{
+  width: 100%;
+  padding: 20px;
+} */
   .profile__formContainer{
   width: 100%;
 }
+  .createPost__header{
+  width: 100%;
+}
+
 
 .profile__header{
     background-color: white;
@@ -19,6 +26,7 @@
 
 .profile__header{
     display: flex;
+    justify-content: space-between;
     align-items: center;
     padding: 20px;
 }
@@ -38,11 +46,18 @@
 
 @media screen and (max-width:757px) {
   .profile{
-      width: 300px;
+      width: 100%;
       padding: 20px;
   }
    .profile__header{
       width: 300px;
+  }
+  .profile__details{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
   
 }

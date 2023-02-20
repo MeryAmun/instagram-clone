@@ -3,7 +3,7 @@ import './suggestions.css'
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Modal from "@mui/material/Modal";
-import {Profile,Login } from  '../index'
+import {Profile,Login, Footer } from  '../index'
 
 import { onAuthStateChanged } from "firebase/auth";
 import { style } from '../../App';
@@ -102,6 +102,7 @@ const Suggestions = ({user,  profilePicture,userId}) => {
         </Box>
       </Paper>
         </div>
+        <Footer/>
     </div>
   )
 }

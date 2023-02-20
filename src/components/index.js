@@ -11,8 +11,9 @@ import Header from "./header/Header";
 import Online from "./online/Online";
 import SmallHeader from "./smallHeader/SmallHeader";
 import ModalComponent from "./Modal/Modal";
+import Footer from "./footer/Footer";
 
 
 export {
-    Post,Signup, Login, Profile, CreatePost, EditPost, CreateProfile,Sidebar,Suggestions,Header,Online,SmallHeader,ModalComponent
+    Post,Signup, Login, Profile, CreatePost, EditPost, CreateProfile,Sidebar,Suggestions,Header,Online,SmallHeader,ModalComponent,Footer
 }

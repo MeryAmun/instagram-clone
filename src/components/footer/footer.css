@@ -1,0 +1,23 @@
+.footer{
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: flex-start;
+}
+.footer__links{
+display: flex;
+flex-wrap: wrap;
+}
+
+.footer__link{
+text-decoration: none;
+color: lightgray;
+font-size: 14px;
+margin: 5px;
+}
+.footer__linkMiddleDot{
+color: lightgray;
+}
+.footer__copyright{
+color: lightgray;
+}
