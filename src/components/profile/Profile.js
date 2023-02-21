@@ -21,7 +21,7 @@ const Profile = () => {
   const [currentUser, setCurrentUser] = useState(null)
   const [newImageUrl, setNewImageUrl] = useState(null);
   const [email, setEmail] = useState(null)
-const [currentUserImage, setCurrentUserImage] = useState(auth.currentUser.photoURL)
+const [currentUserImage, setCurrentUserImage] = useState(auth?.currentUser?.photoURL)
 
 
   useEffect(() => {
@@ -29,9 +29,9 @@ const [currentUserImage, setCurrentUserImage] = useState(auth.currentUser.photoU
     if (authUser?.displayName !== null) {
       setUserId(authUser?.uid)
       setCurrentUser(authUser?.displayName);
-      setEmail(authUser.email)
+      setEmail(authUser?.email)
     }
-    if(authUser.photoURL === ''){
+    if(authUser?.photoURL === ''){
        setCurrentUserImage(authUser?.photoURL)
     }
   })
@@ -122,7 +122,6 @@ const [currentUserImage, setCurrentUserImage] = useState(auth.currentUser.photoU
 
       });
   };
-console.log(currentUserImage)
 
   return (
     <div className="profile">

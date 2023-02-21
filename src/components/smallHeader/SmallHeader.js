@@ -9,15 +9,17 @@ import { style } from "../../App";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
 
-const SmallHeader = ({userId}) => {
+const SmallHeader = () => {
   const [openProfile, setOpenProfile] = useState(false);
   const [form, setForm] = useState("Signup");
+  const [userId, setUserId] = useState(null)
   const [profileUrl, setProfileUrl] = useState(null)
 
   useEffect(() => {
     onAuthStateChanged(auth, (authUser) => {
       if (authUser) {
         setProfileUrl(authUser?.photoURL)
+        setUserId(authUser?.uid)
       }
     });
   }, [userId]);

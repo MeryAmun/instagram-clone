@@ -168,12 +168,12 @@ const [currentUser, setCurrentUser] = useState(null)
           </span>
           <span className="sidebar__linkTitle">More</span>
         </div>
-        <Fragment>
+        {/* <Fragment> */}
           {/* <Button onClick={() => setOpenDrawer(false)}>open</Button> */}
-          <Drawer open={openDrawer} onClose={() => setOpenDrawer(false)}>
+          {/* <Drawer open={openDrawer} onClose={() => setOpenDrawer(false)}>
             <h3>Testing 123</h3>
           </Drawer>
-        </Fragment>
+        </Fragment> */}
       </div>
     </div>
   );
