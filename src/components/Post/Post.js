@@ -5,7 +5,7 @@ import Paper from "@mui/material/Paper";
 import Modal from "@mui/material/Modal";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { collection,query,onSnapshot,orderBy,addDoc, doc, deleteDoc , serverTimestamp, Timestamp} from "firebase/firestore";
+import { collection,query,onSnapshot,orderBy,addDoc, doc, deleteDoc , serverTimestamp, Timestamp, setDoc, FieldValue} from "firebase/firestore";
 import { db, auth } from "../../firebaseConfig";
 import EditPost from "./EditPost";
 import { style } from "../../App";
@@ -21,10 +21,10 @@ const Comment = ({ imageUrl, username, message,userId, uid, timestamp,userProfil
   const [currentUser, setCurrentUser] = useState(null)
   const [currentUserId, setCurrentUserId] = useState(null)
   const [comments, setComments] = useState([]);
-  const [likedId, setLikedId] = useState([])
   const [comment, setComment] = useState('');
-  const [likes, setLikes] = useState(0);
-  const [likesCount, setLikesCount] = useState(likes)
+  const [likes, setLikes] = useState([]);
+  const [likesCount, setLikesCount] = useState(0)
+  const [likedSum, setLikedSum] = useState(likesCount)
   const [shares, setShares] = useState(0);
   const [sharesCount, setSharesCount] = useState(shares);
   const [liked, setLiked] = useState(false)
@@ -90,11 +90,14 @@ const Comment = ({ imageUrl, username, message,userId, uid, timestamp,userProfil
         collection(db, "posts", uid, "likes"),
       );
       onSnapshot(q, (querySnapshot) => {
-        setLikes(querySnapshot.docs.map(({numOfLikes}) => numOfLikes));
+        setLikes(querySnapshot.docs.map((doc) =>doc.data()));
       });
     }
-  }, [uid])
-  // console.log(likes)
+    for(let i = 0; i < likes.length; i++){
+setLikedSum(likes[i] += likedSum)
+    }
+  }, [liked])
+   console.log(likes)
 
    //**============GETS SHARES COUNT ======================================================================================= */
   useEffect(() => {
@@ -149,37 +152,40 @@ const Comment = ({ imageUrl, username, message,userId, uid, timestamp,userProfil
   //**============TOGGLE LIKE======================================================================================= */
   const toggleLike = async (e) => {
     try {
+      likes?.map(({ numOfLikes, likeStatus}) => {
+        if( likes?.indexOf(currentUser) === -1 && likeStatus === true){
+          setLikesCount(likesCount - 1)
+          setLiked(false)
+        }else if( likes?.indexOf(currentUser) === -1 && likeStatus === false){
+          setLikesCount(likesCount + 1)
+          setLiked(true)
+        }
+        if( !currentUserId){
+          setLikesCount(numOfLikes)
+        }
+       // setLiked((prev) => !prev)
+      })
       await addDoc(collection(db, "posts", uid, "likes"), {
-        numOfLikes: 0,
-        userId:currentUserId
+        numOfLikes: likesCount,
+        likeStatus:liked,
+        postId:uid,
+        likedUserId:currentUserId
       });
-      // likes?.map(({userId, numOfLikes}) => {
-      //   if(userId === currentUserId){
-      //     setLikesCount(numOfLikes)
-      //     setLiked(null)
-      //   }
-      //   if(userId !== currentUserId && liked){
-      //     setLikesCount(numOfLikes - 1)
-      //   }else if(userId !== currentUserId && !liked){
-      //     setLikesCount(numOfLikes + 1)
-          
-      //   }
-      //   setLiked((prev) => !prev)
-      // })
-      if(userId !== currentUserId && !liked){
-        setLikesCount(likesCount + 1)
-        setLiked(false)
-      }else if(userId !== currentUserId && liked){
-        setLiked(true)
-        setLikesCount(likesCount + 1)
-        setLiked(false)
-      }
-      if(userId && liked){
-        setLikesCount(likesCount - 1)
-      }else{
-        setLikesCount(likesCount + 1)
-        setLiked(false)
-      }
+     
+      // if(userId !== currentUserId && !liked){
+      //   setLikesCount(likesCount + 1)
+      //   setLiked(false)
+      // }else if(userId !== currentUserId && liked){
+      //   setLiked(true)
+      //   setLikesCount(likesCount + 1)
+      //   setLiked(false)
+      // }
+      // if(userId && liked){
+      //   setLikesCount(likesCount - 1)
+      // }else{
+      //   setLikesCount(likesCount + 1)
+      //   setLiked(false)
+      // }
     
     } catch (err) {
       alert(err);
@@ -281,7 +287,7 @@ const Comment = ({ imageUrl, username, message,userId, uid, timestamp,userProfil
           <div className="post__reactionType">
             <Heart size={20} className={liked ? 'post__reactionIconSelected' : ''} onClick={toggleLike}/>
             <br />
-            <span className="post__reactionCount">{likesCount === 1 ? likesCount + ' like' : likesCount + ' likes'} </span>
+            <span className="post__reactionCount">{likedSum === 1 ? likedSum + ' like' : likedSum + ' likes'} </span>
           </div>
           <div className="post__reactionType">
             <MessageCircle size={20}/>

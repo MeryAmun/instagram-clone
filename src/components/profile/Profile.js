@@ -100,10 +100,11 @@ const [currentUserImage, setCurrentUserImage] = useState(auth.currentUser.photoU
         },
         async () => {
           await getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-           setNewImageUrl(url)
+          //  setNewImageUrl(url)
            updateProfile(auth.currentUser, {
-            photoURL:newImageUrl,
+            photoURL:url,
          });
+         setNewImageUrl(url)
             setProgress(0);
             setPreviewImage(null)
             setCurrentFile(null)

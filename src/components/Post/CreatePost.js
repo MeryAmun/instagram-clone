@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { PhotoCamera } from "@mui/icons-material";
-import { Button, IconButton, TextField } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import { TextareaAutosize } from "@mui/material";
 import "./createPost.css";
 import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
 import { db, storage } from "../../firebaseConfig";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc} from "firebase/firestore";
 import {Header } from '../index'
 
 const CreatePost = ({ username,userId,profileUrl}) => {
@@ -112,18 +112,7 @@ const CreatePost = ({ username,userId,profileUrl}) => {
             </div>
           )}
         </div>
-      
-        {/* <div className="imageUpload__caption">
-          <TextField
-            type="text"
-            name="caption"
-            label="Enter Caption..."
-            onChange={(e) => setCaption(e.target.value)}
-            value={caption}
-            variant="outlined"
-            className="imageUpload__caption"
-          />
-        </div> */}
+  
         <div className="imageUpload__messageContainer">
           <TextareaAutosize
             aria-label="minimum height"
