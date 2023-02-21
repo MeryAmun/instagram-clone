@@ -7,14 +7,13 @@ import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
 import { db, storage } from "../../firebaseConfig";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 import {Header } from '../index'
 
 const CreatePost = ({ username,userId,profileUrl}) => {
   const [currentFile, setCurrentFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const [progress, setProgress] = useState(0);
-  // const [caption, setCaption] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
@@ -48,12 +47,12 @@ const CreatePost = ({ username,userId,profileUrl}) => {
         async () => {
           await getDownloadURL(uploadTask.snapshot.ref).then((url) => {
             addDoc(collection(db, "posts"), {
-              timestamp: serverTimestamp(),
+              timestamp:new Date().toLocaleString(),
               message: message,
               imageUrl: url,
               username: username,
               userId:userId,
-              userImageUrl:profileUrl
+              userProfileUrl:profileUrl
             });
             setProgress(0);
             setCurrentFile(null)
@@ -65,13 +64,18 @@ const CreatePost = ({ username,userId,profileUrl}) => {
     }
   };
 
+
   return (
     <div className="createPost">
       <Header/>
       <div className="createPost__header">
-        <Box sx={{ width: "15%" }}>
+        {
+          currentFile ? (
+            <Box sx={{ width: "100%" }}>
           <LinearProgress variant="determinate" value={progress} />
         </Box>
+          ) : null
+        }
       </div>
       <form>
         <div className="">

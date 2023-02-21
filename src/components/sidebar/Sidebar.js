@@ -33,23 +33,15 @@ const [currentUser, setCurrentUser] = useState(null)
       if (authUser) {
         setUserId(authUser?.uid);
         setCurrentUser(authUser?.displayName)
+        setProfileUrl(authUser?.photoURL)
       } else {
         setUserId(null);
         setCurrentUser(null)
       }
     });
   }, [userId]);
-  useEffect(() => {
-    profilePicture?.map(({ currentUser, imageUrl }) => {
-      if (userId === currentUser) {
-        return setProfileUrl(imageUrl);
-      }
-      if ((imageUrl = "")) {
-        return setProfileUrl(defaultImage);
-      }
-    });
-  }, [userId]);
-
+ 
+// console.log(auth)
   return (
     <div className="sidebar">
       <div className="suggestions__profileModal">

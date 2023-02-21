@@ -108,10 +108,26 @@ align-items: center;
 .post__commentText{
     border-bottom: 1px solid lightgray;
     outline: none;
+    width: 97%;
+    padding: 5px;
 }
+form{
+    width: 100%;
+}
+
 .post__comment{
 word-wrap: break-word;
 font-size: 15px; 
+color: rgb(38, 38, 38);
+font-weight: 400;
+font-family: Arial, Helvetica, sans-serif;
+}
+.post__viewComments{
+    font-size: 13px; 
+color:gray;
+font-weight: 400;
+font-family: Arial, Helvetica, sans-serif;
+cursor: pointer;
 }
 
 .post__commentBox{
@@ -121,6 +137,9 @@ font-size: 15px;
     align-items: center;
     word-wrap: break-word; 
 }
+.post__commentForm{
+    width: 100%;
+}
 .post__commenter{
     flex: 1;
     display: flex;
@@ -128,14 +147,14 @@ font-size: 15px;
     align-items: center;
 }
 .post__commentAvatar{
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
     margin: 0.3rem;
 }
 .post__avatar{
-    width: 35px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
 }
 /* ========================media queries =============================================*/

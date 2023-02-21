@@ -6,18 +6,21 @@ import {  Header, Login, ModalComponent, Profile, Signup } from "../index";
 import "./smallHeader.css";
 import { defaultImage } from "../../data/dummyData";
 import { style } from "../../App";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../../firebaseConfig";
 
-const SmallHeader = ({user, profilePicture,userId}) => {
+const SmallHeader = ({userId}) => {
   const [openProfile, setOpenProfile] = useState(false);
   const [form, setForm] = useState("Signup");
   const [profileUrl, setProfileUrl] = useState(null)
 
-
   useEffect(() => {
-    profilePicture?.map(({currentUser, imageUrl}) => {
-    return userId === currentUser ? setProfileUrl(imageUrl) : null
-      })
-     }, [userId]);
+    onAuthStateChanged(auth, (authUser) => {
+      if (authUser) {
+        setProfileUrl(authUser?.photoURL)
+      }
+    });
+  }, [userId]);
 
   return (
     <div className="smallHeader">
@@ -41,11 +44,11 @@ const SmallHeader = ({user, profilePicture,userId}) => {
         <Heart size={20}/>
       </span>
       {
-        user ? (
+        userId ? (
           <div className="suggestion__imageBox">
             <img
               alt="avatar"
-              src={profileUrl ? profileUrl : defaultImage}
+              src={profileUrl}
               className="smallHeader__ProfileAvatar"
               onClick={() => setOpenProfile(true)}
             />

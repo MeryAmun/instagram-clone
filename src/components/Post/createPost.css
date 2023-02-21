@@ -1,11 +1,9 @@
 .createPost{
     display: flex;
-    margin-left: 1rem;
     flex-direction: column;
     border: none;
-  
+  width: 100%;
     align-items: center;
-    margin-right: auto;
 }
 
 .imageUpload__button{
@@ -20,7 +18,7 @@
 }
 .imageUpload__messageContainer, .imageUpload__caption{
     margin: 10px;
-    width: 400px;
+    width: 370px;
 }
 .imageUpload__message{
     width: 100%;
@@ -32,6 +30,10 @@
      font-family: Arial, Helvetica, sans-serif;
 }
 
+.createPost__header{
+    border-top: 1px solid lightgray;
+    margin-top: 10px;
+}
 /* ========================media queries =============================================*/
 
 @media screen and (max-width:757px) {

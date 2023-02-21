@@ -18,15 +18,15 @@ const Suggestions = ({user,  profilePicture,userId}) => {
 
 
     useEffect(() => {
-      profilePicture?.map(({currentUser, imageUrl}) => {
-        if (userId === currentUser) {
-          return setProfileUrl(imageUrl);
+      onAuthStateChanged(auth, (authUser) => {
+        if (authUser) {
+          setProfileUrl(authUser?.photoURL)
+        } else {
+    setProfileUrl(defaultImage)
+  
         }
-        if ((imageUrl = "")) {
-          return setProfileUrl(defaultImage);
-        }
-      })
-       }, [userId]);
+      });
+    }, [userId]);
 
     // const toggleProfile = () => {
     //   if(modalContent === 'Profile')

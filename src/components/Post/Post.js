@@ -1,10 +1,8 @@
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect } from "react";
 import "./post.css";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Modal from "@mui/material/Modal";
-import Avatar from "@mui/material/Avatar";
-import TextField from "@mui/material/TextField";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { collection,query,onSnapshot,orderBy,addDoc, doc, deleteDoc , serverTimestamp, Timestamp} from "firebase/firestore";
@@ -15,14 +13,16 @@ import { Send } from "react-feather";
 import { Heart } from "react-feather";
 import { MessageCircle } from "react-feather";
 import { defaultImage } from "../../data/dummyData";
-import { onAuthStateChanged } from "firebase/auth";
+import { beforeAuthStateChanged, onAuthStateChanged } from "firebase/auth";
+import moment from 'moment'
 
-const Comment = ({ imageUrl, username, message,userId, uid, timestamp, userImageUrl,profilePicture }) => {
+const Comment = ({ imageUrl, username, message,userId, uid, timestamp,userProfileUrl}) => {
   const [open, setOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(null)
   const [currentUserId, setCurrentUserId] = useState(null)
   const [comments, setComments] = useState([]);
-  const [comment, setComment] = useState([]);
+  const [likedId, setLikedId] = useState([])
+  const [comment, setComment] = useState('');
   const [likes, setLikes] = useState(0);
   const [likesCount, setLikesCount] = useState(likes)
   const [shares, setShares] = useState(0);
@@ -33,13 +33,15 @@ const Comment = ({ imageUrl, username, message,userId, uid, timestamp, userImage
   const [commentLikesCount, setCommentLikesCount] = useState(commentLikes);
   const [likedComment, setLikedComment] = useState(false);
   const [profileUrl, setProfileUrl] = useState(null);
-  const commentRef = useRef()
+  const [viewComments, setViewComments] = useState(false);
+
 
 
    useEffect(() => {
     onAuthStateChanged(auth, (authUser) => {
       if (authUser) {
         setCurrentUserId(authUser?.uid);
+        setProfileUrl(authUser?.photoURL)
         setCurrentUser(authUser.displayName)
       } else {
         setCurrentUserId(null);
@@ -47,20 +49,7 @@ const Comment = ({ imageUrl, username, message,userId, uid, timestamp, userImage
       }
     });
   }, [currentUserId]);
-
-    /**=======================GET PROFILE PICTURE========================== */
-
-    useEffect(() => {
-      profilePicture?.map(({ currentUser, imageUrl }) => {
-        if (currentUserId === currentUser) {
-          return setProfileUrl(imageUrl);
-        }
-        if ((imageUrl = "")) {
-          return setProfileUrl(defaultImage);
-        }
-      });
-    }, [currentUserId,currentUser]);
-  
+ 
 
   /**========================TIMESTAMP=================================== */
  let newTimestamp;
@@ -101,10 +90,11 @@ const Comment = ({ imageUrl, username, message,userId, uid, timestamp, userImage
         collection(db, "posts", uid, "likes"),
       );
       onSnapshot(q, (querySnapshot) => {
-        setLikes(querySnapshot.docs.map((doc) => doc.data()));
+        setLikes(querySnapshot.docs.map(({numOfLikes}) => numOfLikes));
       });
     }
   }, [uid])
+  // console.log(likes)
 
    //**============GETS SHARES COUNT ======================================================================================= */
   useEffect(() => {
@@ -140,7 +130,6 @@ const Comment = ({ imageUrl, username, message,userId, uid, timestamp, userImage
       alert(err);
     }
   };
-
   //**============POST COMMENT======================================================================================= */
   const postComment = async (e) => {
     e.preventDefault();
@@ -149,8 +138,8 @@ const Comment = ({ imageUrl, username, message,userId, uid, timestamp, userImage
         timestamp: serverTimestamp(),
         text: comment,
         commentBy:currentUser,
-        imageUrl: profileUrl,
-        userId:currentUserId
+        userId:currentUserId,
+        userImage:profileUrl
       });
       setComment("");
     } catch (err) {
@@ -161,35 +150,64 @@ const Comment = ({ imageUrl, username, message,userId, uid, timestamp, userImage
   const toggleLike = async (e) => {
     try {
       await addDoc(collection(db, "posts", uid, "likes"), {
-        numOfLikes: likesCount,
+        numOfLikes: 0,
+        userId:currentUserId
       });
-      if(uid && liked){
+      // likes?.map(({userId, numOfLikes}) => {
+      //   if(userId === currentUserId){
+      //     setLikesCount(numOfLikes)
+      //     setLiked(null)
+      //   }
+      //   if(userId !== currentUserId && liked){
+      //     setLikesCount(numOfLikes - 1)
+      //   }else if(userId !== currentUserId && !liked){
+      //     setLikesCount(numOfLikes + 1)
+          
+      //   }
+      //   setLiked((prev) => !prev)
+      // })
+      if(userId !== currentUserId && !liked){
+        setLikesCount(likesCount + 1)
+        setLiked(false)
+      }else if(userId !== currentUserId && liked){
+        setLiked(true)
+        setLikesCount(likesCount + 1)
+        setLiked(false)
+      }
+      if(userId && liked){
         setLikesCount(likesCount - 1)
       }else{
         setLikesCount(likesCount + 1)
+        setLiked(false)
       }
-     setLiked((prev) => !prev )
+    
     } catch (err) {
       alert(err);
     }
   };
   //**============TOGGLE COMMENT LIKE==========================================================================*/
-
+  // if(uid && likedComment){
+  //   setCommentLikesCount(commentLikesCount - 1)
+  // }else{
+  //   setCommentLikesCount(commentLikesCount + 1)
+  // }
   const toggleCommentLike = async () => {
     try {
-      await addDoc(collection(db, "posts", uid, "commentLikes"), {
-        numOfCommentLikes: commentLikesCount,
-      });
-      if(uid && likedComment){
-        setCommentLikesCount(commentLikesCount - 1)
-      }else{
-        setCommentLikesCount(commentLikesCount + 1)
-      }
+      // await addDoc(collection(db, "posts", uid, "commentLikes"), {
+      //   numOfCommentLikes: commentLikesCount,
+      // });
+      comments.map(({text, id},index) => {
+        
+ console.log(index,'space',id)
+
+       
+      })
      setLikedComment((prev) => !prev )
     } catch (err) {
       alert(err);
     }
   };
+
 
   //**============TOGGLE SHARE======================================================================================= */
   const toggleShare = async (e) => {
@@ -209,7 +227,7 @@ const Comment = ({ imageUrl, username, message,userId, uid, timestamp, userImage
   };
 
 
-  console.log(comments)
+  //console.log(comments)
   return (
     <div className="post">
       {/* Profile Modal */}
@@ -239,10 +257,11 @@ const Comment = ({ imageUrl, username, message,userId, uid, timestamp, userImage
       {/* header plus avatar */}
       <div className="post__headerContainer">
         <div className="post__header">
-          <img alt="avatar" src={userImageUrl}className="post__avatar" />
+          <img alt="avatar" src={userProfileUrl}className="post__avatar" />
           <h3>{username}</h3>{" "}
           <strong className="post__middleDot">&middot;</strong>
-          <span className="post__timestamp">{newTimestamp}</span>
+          {/* <span className="post__timestamp">{newTimestamp}</span> */}
+          <span className="post__timestamp">{timestamp}</span>
         </div>
         {currentUser && currentUserId === userId ? (
           <div className="post__actionIcons">
@@ -282,33 +301,38 @@ const Comment = ({ imageUrl, username, message,userId, uid, timestamp, userImage
       
       {/* <span className="post__timestamp">{timestamp}</span> */}
       <div className="post__reactions">
+         {
+          viewComments ? ( 
           <div className="post__readComments">
-           {
-         
-            comments?.map(({text:{imageUrl,text,commentBy}},index) => (
-             <div className="post__commentBox" key={index}>
-              <div className="post__commenter">
-              <img src={imageUrl} alt="avatar" className="post__commentAvatar" />
-              <p className="post__comment">
-                <span><strong>{commentBy}</strong></span><br />
-                {text}</p>
-              {/* <span>{console.log(timestamp?.timestamp.seconds)}</span> */}
-              </div>
-            {
-              currentUser ? (
-                <div className="post__reactionType">
-                <Heart size={15} className={likedComment ? 'post__reactionIconSelected' : ''} onClick={toggleCommentLike} ref={commentRef}/>
-                <span className="post__reactionCount">{commentLikesCount}</span>
-              </div>
-              ) : null
-            }
+          {
+        
+           comments?.map(({text:{text,commentBy,id,userImage}}) => (
+            <div className="post__commentBox" key={id}>
+             <div className="post__commenter">
+             <img src={userImage} alt="avatar" className="post__commentAvatar" />
+             <p className="post__comment">
+               <span><strong>{commentBy}</strong></span><br />
+               {text}</p>
+             {/* <span>{console.log(timestamp?.timestamp.seconds)}</span> */}
              </div>
-            ))
+           {
+             currentUser ? (
+               <div className="post__reactionType">
+               <Heart size={15} className={likedComment ? 'post__reactionIconSelected' : ''} onClick={toggleCommentLike}/>
+               <span className="post__reactionCount">{commentLikesCount}</span>
+             </div>
+             ) : null
            }
-          </div>
+            </div>
+           ))
+          }
+         </div>) : (
+          <span className="post__viewComments" onClick={setViewComments((prev) => !prev)}>view comments</span>
+         )
+         }
           {
             currentUser ? (
-              <div>
+              <div className="post__commentForm">
           <form onSubmit={postComment}>
           <input
             type="text"

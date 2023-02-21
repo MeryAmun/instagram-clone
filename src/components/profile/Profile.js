@@ -7,30 +7,35 @@ import { signOut } from "firebase/auth";
 import "./profile.css";
 import Avatar from '@mui/material/Avatar';
 import { db, storage } from "../../firebaseConfig";
-import { collection, addDoc,serverTimestamp} from "firebase/firestore";
+import { collection, addDoc,serverTimestamp, updateDoc} from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { defaultImage } from "../../data/dummyData";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, updateProfile } from "firebase/auth";
 
-const Profile = ({profilePicture}) => {
-  const [userData, setUserData] = useState();
+const Profile = () => {
   const [currentFile, setCurrentFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState("");
   const [userId, setUserId] = useState(null);
-  const [profileUrl, setProfileUrl] = useState(null);
   const [currentUser, setCurrentUser] = useState(null)
+  const [newImageUrl, setNewImageUrl] = useState(null);
+  const [email, setEmail] = useState(null)
+const [currentUserImage, setCurrentUserImage] = useState(auth.currentUser.photoURL)
 
 
   useEffect(() => {
-    const user = auth.currentUser;
-    if (user !== null) {
-      setUserData(user);
-      setUserId(auth.currentUser.uid)
-      setCurrentUser(auth.currentUser.displayName)
+    onAuthStateChanged(auth, (authUser) => {
+    if (authUser?.displayName !== null) {
+      setUserId(authUser?.uid)
+      setCurrentUser(authUser?.displayName);
+      setEmail(authUser.email)
     }
-  }, [userId,currentUser]);
+    if(authUser.photoURL === ''){
+       setCurrentUserImage(authUser?.photoURL)
+    }
+  })
+  }, [userId]);
 
   const onFileChangeHandler = (e) => {
     setCurrentFile(e.target.files[0]);
@@ -40,7 +45,7 @@ const Profile = ({profilePicture}) => {
   };
 
 /**==================UPLOAD PHOTO */
-  const onHandleUpload = () => {
+  const onHandleUpload = (e) => {
     if (!currentFile) {
       setError("Please choose a file first!");
     } else {
@@ -61,14 +66,12 @@ const Profile = ({profilePicture}) => {
         },
         async () => {
           await getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-            addDoc(collection(db, "profiles"), {
-              timestamp: serverTimestamp(),
-              imageUrl: url,
-              currentUser:userId
-            });
+           updateProfile(auth.currentUser, {
+           photoURL: url,
+        });
             setProgress(0);
-            setCurrentFile(null)
             setPreviewImage(null)
+            setCurrentFile(null)
           });
         }
       );
@@ -76,39 +79,38 @@ const Profile = ({profilePicture}) => {
   };
 
   /**=====================UPDATE PHOTO================================= */
-  const onHandleUpdate = () => {
-    // if (!currentFile) {
-    //   setError("Please choose a file first!");
-    // } else {
-    //   setError("");
-    //   const storageRef = ref(storage, `/profiles/${currentFile.name}`);
-    //   const uploadTask = uploadBytesResumable(storageRef, currentFile);
-    //   uploadTask.on(
-    //     "state_changed",
-    //     (snapshot) => {
-    //       const percent = Math.round(
-    //         (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-    //       );
-    //       setProgress(percent);
-    //     },
-    //     (err) => {
-    //       const errorMessage = err.message;
-    //       setError(errorMessage);
-    //     },
-    //     async () => {
-    //       await getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-    //         addDoc(collection(db, "profiles"), {
-    //           timestamp: serverTimestamp(),
-    //           imageUrl: url,
-    //           currentUser:userId
-    //         });
-    //         setProgress(0);
-    //         setCurrentFile(null)
-    //         setPreviewImage(null)
-    //       });
-    //     }
-    //   );
-    //}
+  const onHandleUpdate = (e) => {
+    if (!currentFile) {
+      setError("Please choose a file first!");
+    } else {
+      setError("");
+      const storageRef = ref(storage, `/profiles/${currentFile.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, currentFile);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const percent = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          setProgress(percent);
+        },
+        (err) => {
+          const errorMessage = err.message;
+          setError(errorMessage);
+        },
+        async () => {
+          await getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+           setNewImageUrl(url)
+           updateProfile(auth.currentUser, {
+            photoURL:newImageUrl,
+         });
+            setProgress(0);
+            setPreviewImage(null)
+            setCurrentFile(null)
+          });
+        }
+      );
+    }
   };
   /**===============LOGOUT=================== */
   const logOut = () => {
@@ -119,18 +121,8 @@ const Profile = ({profilePicture}) => {
 
       });
   };
+console.log(currentUserImage)
 
-  
-  useEffect(() => {
-    profilePicture?.map(({ currentUser, imageUrl }) => {
-      if (userId === currentUser) {
-        return setProfileUrl(imageUrl);
-      }
-      if ((imageUrl = "")) {
-        return setProfileUrl(defaultImage);
-      }
-    });
-  }, [userId]);
   return (
     <div className="profile">
       <center>
@@ -167,7 +159,7 @@ const Profile = ({profilePicture}) => {
                 type="file"
                 onChange={onFileChangeHandler}
               />
-            <img alt='avatar' src={profileUrl}
+            <img alt='avatar' src={currentUserImage}
         className='profile__avatar'/>
             </IconButton>
           </div>
@@ -189,13 +181,13 @@ const Profile = ({profilePicture}) => {
           )}
         </div>
         {
-          profileUrl ? (
+          currentUserImage ? (
             <div className="imageUpload__button">
           <Button
             type="button"
             variant="contained"
             sx={{ width: 350 }}
-            onClick={onHandleUpload}
+            onClick={onHandleUpdate}
             style={{ width: "200px" }}
           >
             update photo
@@ -207,7 +199,7 @@ const Profile = ({profilePicture}) => {
             type="button"
             variant="contained"
             sx={{ width: 350 }}
-            onClick={onHandleUpdate}
+            onClick={onHandleUpload}
             style={{ width: "200px" }}
           >
            upload photo
@@ -223,8 +215,8 @@ const Profile = ({profilePicture}) => {
       
     </div>
 <div className="profile__details">
-<h4 className='profile__text'><strong>Username</strong>: {userData?.displayName}</h4>
-      <h4 className='profile__text'><strong>Email</strong>: {userData?.email}</h4>
+<h4 className='profile__text'><strong>Username</strong>: {currentUser}</h4>
+      <h4 className='profile__text'><strong>Email</strong>: {email}</h4>
 </div>
       </div>
     </div>

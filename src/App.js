@@ -9,7 +9,8 @@ import {
   Sidebar,
   Online,
   SmallHeader,
-  ModalComponent
+  ModalComponent,
+  Footer
 } from "./components";
 import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
 import { auth, db } from "./firebaseConfig";
@@ -185,10 +186,9 @@ function App() {
                 </center>
               )}
             </div>
+            <Footer/>
           </Box>
          </div>
-          {/* </ModalComponent> */}
-        {" "}
         </div>
       )}
     </div>
