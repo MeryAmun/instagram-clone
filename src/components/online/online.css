@@ -3,6 +3,9 @@
     justify-content: center;
     align-items: center;
     margin-top: 3rem;
+    padding: 20px;
+    /* border: 1px solid red;
+    width: 500px; */
 }
 .online__available{
 display: flex;
@@ -11,14 +14,31 @@ justify-content: center;
 align-items: center;
 margin: 10px;
 }
-.online__imageContainer{
-    border: 2px gra;
+/* .online__image{
+    border: 2px solid greenyellow;
+} */
+.online__active{
+    border: 2px solid greenyellow;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
 }
 .online__arrows{
     background-color: #fff;
     cursor: pointer;
     z-index: 15;
 }
+.online__username{
+    font-size: 13px;
+    font-weight: 300;
+    color: #262626;
+    margin-top: 10px;
+}
+/* .online__availableBox{
+    border: 1px solid red;
+    display: flex;
+    width: 100%;
+} */
 
 
 /* ========================media queries =============================================*/

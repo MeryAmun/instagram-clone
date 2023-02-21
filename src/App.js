@@ -92,7 +92,9 @@ function App() {
          user={user} 
          userId={userId}
       />
-        {user ? <Online /> : null}
+        {user ? <div className="app__onlineSection">
+        <Online />
+        </div> : null}
         <div className="app__container">
           <div className="app__posts">
             <div className="app__postLeft">
