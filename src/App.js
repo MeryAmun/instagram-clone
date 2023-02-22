@@ -14,7 +14,7 @@ import {
 } from "./components";
 import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
 import { auth, db } from "./firebaseConfig";
-import{ Button, Box} from "@mui/material";
+import{ Button, Box, CircularProgress} from "@mui/material";
 import { onAuthStateChanged } from "firebase/auth";
 import { defaultImage } from "./data/dummyData";
 export const style = {
@@ -37,6 +37,7 @@ function App() {
   const [userId, setUserId] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [form, setForm] = useState("Signup");
+  const [loading, setLoading] = useState(true)
 
 
   useEffect(() => {
@@ -77,8 +78,19 @@ function App() {
     });
   }, []);
 
+  useEffect(() => {
+    setLoading(false)
+  }, [])
+  
 
 
+if(loading){
+  return ( 
+  <div className="loader">
+  <center><CircularProgress /></center>
+</div>
+)
+}
 
   return (
     <div className="app">

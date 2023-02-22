@@ -3,6 +3,7 @@
     max-width: 500px;
     border: 1px solid lightgray;
     margin: 20px;
+    padding: 10px;
    
 }
 .post__middleDot{
@@ -161,7 +162,7 @@ cursor: pointer;
 
 @media screen and (max-width:757px) {
   .post{
-    margin-top: 1rem;
+    margin-top: 3rem;
     }
 
     /* .post__image{
