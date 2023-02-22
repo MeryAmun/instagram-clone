@@ -172,7 +172,7 @@ const Sidebar = ({ profilePicture, user }) => {
         </Tooltip>
         <Tooltip title="More">
           <div
-            className="sidebar__iconBox sidebar__iconSmall"
+            className="sidebar__iconBox sidebar__iconSmall more"
             onClick={() => setOpen(true)}
           >
             <span className="sidebar__icon">

@@ -25,24 +25,29 @@
   width: 70%;
   display: flex;
   justify-content: flex-start;
-  margin: .5rem .5rem;
+  margin: 0.3rem .5rem;
   padding: 10px 0;
   cursor: pointer;
   border-radius: 30px;
   
 }
 .sidebar__iconBox:hover{
-  background-color: rgba(234, 239, 247, 0.2);;
+  background-color: rgba(234, 239, 247, 0.1);
+  width: 70%;
   
 }
-.sidebar__iconBox:hover > .sidebar__icon{
+.sidebar__icon:hover{
+  padding: 0.5px;
+}
+/* .sidebar__iconBox:hover > .sidebar__icon{
   padding: 1px;
   
-}
+} */
 .sidebar__icon{
-  margin-right: 2rem;
+  margin-right: .5rem;
   
 }
+
 
 .sidebar__iconImage{
   object-fit: contain;
