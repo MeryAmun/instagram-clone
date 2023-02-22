@@ -246,11 +246,14 @@ console.log(likesCount)
 
   //**============TOGGLE SHARE======================================================================================= */
   const toggleShare = async (e) => {
+    if(!currentUserId){
+      setSharesCount(sharesCount);
+    }
     try {
       await addDoc(collection(db, "posts", uid, "shares"), {
         numOfShares: sharesCount,
       });
-      if (uid && shared) {
+      if (currentUserId && shared) {
         setSharesCount(sharesCount - 1);
       } else {
         setSharesCount(sharesCount + 1);
