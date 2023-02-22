@@ -101,7 +101,11 @@ const Comment = ({
     }
 
     likes?.map(({likedUserId, numOfLikes}) => {
-setLikeId(likedUserId)
+      if(likedUserId === currentUserId){
+        setLikeId(likedUserId)
+      }else{
+        setLikeId(null)
+      }
 //setLikesCount(likesCount += numOfLikes)
     });
     for(let i = 0; i < likes.length; i++){
@@ -111,6 +115,7 @@ setLikeId(likedUserId)
   }, [liked]);
  
 console.log(likes)
+console.log(likeId)
 console.log(likesCount)
   //**============GETS SHARES COUNT ======================================================================================= */
   useEffect(() => {
@@ -163,38 +168,37 @@ console.log(likesCount)
    
     try {
 
-        if (currentUserId !== likeId) {
+        if (!likeId) {
           await addDoc(collection(db, "posts", uid, "likes"), {
              numOfLikes: 1,
              postId: uid,
             likedUserId: currentUserId,
           });
-          //setLikesCount(likesCount + 1);
-          setLiked(true);
+          setLikesCount(likesCount + 1);
+          setLiked((prev) => !prev);
 
         }
-      //else{
-      //   const postDocRef = doc(db, "posts", uid, "likes",likeId).id
-      //     // await updateDoc(postDocRef, {
-      //     //   numOfLikes: 0,
-      //     // });
-      //     setLikesCount(likesCount - 1)
-      //     console.log(postDocRef)
-      //     console.log(likes)
-      // //  //console.log( postDocRef.id)
-      // //     try {
-      // //       await deleteDoc(postDocRef);
-      // //     } catch (err) {
-      // //       alert(err);
-      // //     }
-      //     setLiked((prev) => !prev);
-      //   }
+      else{
+        //const postDocRef = doc(db, "posts", uid, "likes",likeId).id
+          // await updateDoc(postDocRef, {
+          //   numOfLikes: 0,
+          // });
+          setLikesCount(likesCount)
+          // console.log(postDocRef)
+          // console.log(likes)
+      //  //console.log( postDocRef.id)
+      //     try {
+      //       await deleteDoc(postDocRef);
+      //     } catch (err) {
+      //       alert(err);
+    
+      //     }
+          setLiked((prev) => !prev);
+        }
         if (!currentUserId) {
           setLikesCount(likesCount);
         }
-        if(likesCount < 0){
-setLikesCount(0)
-        }
+  
         // setLiked((prev) => !prev)
 
       
