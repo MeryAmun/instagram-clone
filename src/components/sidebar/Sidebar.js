@@ -4,6 +4,7 @@ import Paper from "@mui/material/Paper";
 import Modal from "@mui/material/Modal";
 import Drawer from "@mui/material/Drawer";
 import { onAuthStateChanged } from "firebase/auth";
+import Tooltip from "@mui/material/Tooltip";
 import { CreatePost, Header, Profile } from "../index";
 import {
   Home,
@@ -21,8 +22,8 @@ import { auth } from "../../firebaseConfig";
 import { defaultImage } from "../../data/dummyData";
 
 const Sidebar = ({ profilePicture, user }) => {
-const [userId, setUserId] = useState(null);
-const [currentUser, setCurrentUser] = useState(null)
+  const [userId, setUserId] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
   const [open, setOpen] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -32,16 +33,16 @@ const [currentUser, setCurrentUser] = useState(null)
     onAuthStateChanged(auth, (authUser) => {
       if (authUser) {
         setUserId(authUser?.uid);
-        setCurrentUser(authUser?.displayName)
-        setProfileUrl(authUser?.photoURL)
+        setCurrentUser(authUser?.displayName);
+        setProfileUrl(authUser?.photoURL);
       } else {
         setUserId(null);
-        setCurrentUser(null)
+        setCurrentUser(null);
       }
     });
   }, [userId]);
- 
-// console.log(auth)
+
+  // console.log(auth)
   return (
     <div className="sidebar">
       <div className="suggestions__profileModal">
@@ -97,80 +98,92 @@ const [currentUser, setCurrentUser] = useState(null)
         <Header />
       </div>
       <div className="sidebar__icons">
-        <div className="sidebar__iconBox">
-          <span className="sidebar__icon">
-            <Home />
-          </span>
-          <span className="sidebar__linkTitle">Home</span>
-        </div>
-
-        <div
-          className="sidebar__iconBox sidebar__iconSmall"
-          onClick={() => setOpenDrawer(true)}
-        >
-          <span className="sidebar__icon">
-            <Search />
-          </span>
-          <span className="sidebar__linkTitle">Search</span>
-        </div>
-
-        <div className="sidebar__iconBox">
-          <span className="sidebar__icon">
-            <Compass />
-          </span>
-          <span className="sidebar__linkTitle">Explore</span>
-        </div>
-
-        <div className="sidebar__iconBox">
-          <span className="sidebar__icon">
-            <Video />
-          </span>
-          <span className="sidebar__linkTitle">Reels</span>
-        </div>
-
-        <div className="sidebar__iconBox">
-          <span className="sidebar__icon">
-            <Send />
-          </span>
-          <span className="sidebar__linkTitle">Messages</span>
-        </div>
-
-        <div className="sidebar__iconBox sidebar__iconSmall">
-          <span className="sidebar__icon">
-            <Heart />
-          </span>
-          <span className="sidebar__linkTitle">Notification</span>
-        </div>
-
-        <div className="sidebar__iconBox" onClick={() => setOpen(true)}>
-          <span className="sidebar__icon">
-            <PlusSquare />
-          </span>
-          <span className="sidebar__linkTitle">Create</span>
-        </div>
-        <div
-          className="sidebar__iconBox sidebar__profileBox"
-          onClick={() => setOpenProfile(true)}
-        >
-          <img
-            alt="avatar"
-            src={profileUrl}
-            className="sidebar__icon sidebar__iconImage"
-          />
-          <span className="sidebar__linkTitle">Profile</span>
-        </div>
-        <div
-          className="sidebar__iconBox sidebar__iconSmall"
-          onClick={() => setOpen(true)}
-        >
-          <span className="sidebar__icon">
-            <Menu />
-          </span>
-          <span className="sidebar__linkTitle">More</span>
-        </div>
+        <Tooltip title="Home">
+          <div className="sidebar__iconBox">
+            <span className="sidebar__icon">
+              <Home />
+            </span>
+            <span className="sidebar__linkTitle">Home</span>
+          </div>
+        </Tooltip>
+        <Tooltip title="Search">
+          <div
+            className="sidebar__iconBox sidebar__iconSmall"
+            onClick={() => setOpenDrawer(true)}
+          >
+            <span className="sidebar__icon">
+              <Search />
+            </span>
+            <span className="sidebar__linkTitle">Search</span>
+          </div>
+        </Tooltip>
+        <Tooltip title="Explore">
+          <div className="sidebar__iconBox">
+            <span className="sidebar__icon">
+              <Compass />
+            </span>
+            <span className="sidebar__linkTitle">Explore</span>
+          </div>
+        </Tooltip>
+        <Tooltip title="Reels">
+          <div className="sidebar__iconBox">
+            <span className="sidebar__icon">
+              <Video />
+            </span>
+            <span className="sidebar__linkTitle">Reels</span>
+          </div>
+        </Tooltip>
+        <Tooltip title="Message">
+          <div className="sidebar__iconBox">
+            <span className="sidebar__icon">
+              <Send />
+            </span>
+            <span className="sidebar__linkTitle">Messages</span>
+          </div>
+        </Tooltip>
+        <Tooltip title="Notification">
+          <div className="sidebar__iconBox sidebar__iconSmall">
+            <span className="sidebar__icon">
+              <Heart />
+            </span>
+            <span className="sidebar__linkTitle">Notification</span>
+          </div>
+        </Tooltip>
+        <Tooltip title="Create post">
+          <div className="sidebar__iconBox" onClick={() => setOpen(true)}>
+            <span className="sidebar__icon">
+              <PlusSquare />
+            </span>
+            <span className="sidebar__linkTitle">Create</span>
+          </div>
+        </Tooltip>
+        <Tooltip title="Profile">
+          <div
+            className="sidebar__iconBox sidebar__profileBox"
+            onClick={() => setOpenProfile(true)}
+          >
+            <img
+              alt="avatar"
+              src={profileUrl}
+              className="sidebar__icon sidebar__iconImage"
+            />
+            <span className="sidebar__linkTitle">Profile</span>
+          </div>
+        </Tooltip>
+        <Tooltip title="More">
+          <div
+            className="sidebar__iconBox sidebar__iconSmall"
+            onClick={() => setOpen(true)}
+          >
+            <span className="sidebar__icon">
+              <Menu />
+            </span>
+            <span className="sidebar__linkTitle">More</span>
+          </div>
+        </Tooltip>
         {/* <Fragment> */}
-          {/* <Button onClick={() => setOpenDrawer(false)}>open</Button> */}
-          {/* <Drawer open={openDrawer} onClose={() => setOpenDrawer(false)}>
+        {/* <Button onClick={() => setOpenDrawer(false)}>open</Button> */}
+        {/* <Drawer open={openDrawer} onClose={() => setOpenDrawer(false)}>
             <h3>Testing 123</h3>
           </Drawer>
         </Fragment> */}

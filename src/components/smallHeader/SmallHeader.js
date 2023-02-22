@@ -9,17 +9,15 @@ import { style } from "../../App";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
 
-const SmallHeader = () => {
+const SmallHeader = ({user, profilePicture,userId}) => {
   const [openProfile, setOpenProfile] = useState(false);
   const [form, setForm] = useState("Signup");
-  const [userId, setUserId] = useState(null)
   const [profileUrl, setProfileUrl] = useState(null)
 
   useEffect(() => {
     onAuthStateChanged(auth, (authUser) => {
       if (authUser) {
         setProfileUrl(authUser?.photoURL)
-        setUserId(authUser?.uid)
       }
     });
   }, [userId]);
@@ -46,11 +44,11 @@ const SmallHeader = () => {
         <Heart size={20}/>
       </span>
       {
-        userId ? (
+        user ? (
           <div className="suggestion__imageBox">
             <img
               alt="avatar"
-              src={profileUrl}
+              src={profileUrl ? profileUrl : defaultImage}
               className="smallHeader__ProfileAvatar"
               onClick={() => setOpenProfile(true)}
             />

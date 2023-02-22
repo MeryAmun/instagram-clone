@@ -55,43 +55,34 @@ onAuthStateChanged(auth,(authUser) => {
     if (e.target.files.length !== 0) {
       setPreviewImage(URL.createObjectURL(e.target.files[0]));
     }
-    onHandleUpload();
+    // onHandleUpload()
   };
-  const onHandleUpload = () => {
-    const storageRef = ref(storage, `/images/${currentFile.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, currentFile);
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const percent = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
-        setProgress(percent);
-      },
-      (err) => {
-        const errorMessage = err.message;
-        setError(errorMessage);
-      },
-      async () => {
-        await getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-          setNewUrl(url);
-          addDoc(collection(db, "posts"), {
-            //   timestamp: serverTimestamp(),
-            //   caption: caption,
-            //   message: message,
-            imageUrl: url,
-            //username: username,
-          });
-          setProgress(0);
-          // setCurrentFile(null)
-          // setCaption('')
-          // setMessage('')
-          setPreviewImage(null);
-        });
-      }
-    );
-  };
-
+//   const onHandleUpload = () => {
+//     const storageRef = ref(storage, `/images/${currentFile.name}`);
+//     const uploadTask = uploadBytesResumable(storageRef, currentFile);
+//     uploadTask.on(
+//       "state_changed",
+//       (snapshot) => {
+//         const percent = Math.round(
+//           (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+//         );
+//         setProgress(percent);
+//       },
+//       (err) => {
+//         const errorMessage = err.message;
+//         setError(errorMessage);
+//       },
+//       async () => {
+//         await getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+//          setNewUrl(url)
+//           setProgress(0);
+//            setCurrentFile(null)
+//           setPreviewImage(null);
+//         });
+//       }
+//     );
+//   };
+// console.log(newUrl)
   return (
     <div className="createPost">
       <div className="createPost__header">

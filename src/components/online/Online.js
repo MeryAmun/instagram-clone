@@ -55,7 +55,6 @@ useEffect(() => {
     }
   });
 }, [connectedRef])
-console.log(online)
 
 // console.log(myConnectionsRef)
 // console.log(lastOnlineRef)
