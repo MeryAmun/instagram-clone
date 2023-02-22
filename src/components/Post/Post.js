@@ -165,10 +165,13 @@ console.log(likesCount)
 
   
   const toggleLike = async (e) => {
-   
+    if(!currentUserId){
+      setLikesCount(likesCount);
+      setLiked(false)
+    }
     try {
 
-        if (!likeId) {
+        if (currentUserId && !likeId) {
           await addDoc(collection(db, "posts", uid, "likes"), {
              numOfLikes: 1,
              postId: uid,
@@ -321,7 +324,7 @@ console.log(likesCount)
           <div className="post__reactionType">
             <Heart
               size={20}
-              className={liked ? "post__reactionIconSelected" : ""}
+              className={currentUserId && liked ? "post__reactionIconSelected" : ""}
               onClick={toggleLike}
             />
             <br />
@@ -341,7 +344,7 @@ console.log(likesCount)
           <div className="post__reactionType">
             <Send
               size={20}
-              className={shared ? "post__reactionIconSelected" : ""}
+              className={currentUserId && shared ? "post__reactionIconSelected" : ""}
               onClick={toggleShare}
             />
             <br />
