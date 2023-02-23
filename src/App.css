@@ -13,7 +13,7 @@
 
 
 .app__suggestionBox {
-  flex: 0.40;
+  flex: 0.44;
   height: 0vh;
   margin: 1rem .5rem;
 }
@@ -67,18 +67,20 @@ input {
 .app__makePost {
   margin-top: 4rem;
 }
-.app__suggestionBox{
+
+.app__suggestionBox {
   display: flex;
- 
+
 
 }
 
-.app__onlineSection{
+.app__onlineSection {
   width: 70%;
   margin-left: 8rem;
 }
-.app__login{
-  margin-top: 1rem;
+
+.app__login {
+  margin-top: 4.5rem;
   border-radius: 10px;
   width: 400px;
   height: 100%;
@@ -86,7 +88,8 @@ input {
   top: 0px;
   right: 10px;
 }
-.app__loginHeader{
+
+.app__loginHeader {
   object-fit: contain;
   width: 80%;
   margin-left: 20px;
@@ -95,19 +98,22 @@ input {
   justify-content: center;
   padding: 10px 0px;
 }
-.modal__body{
+
+.modal__body {
   margin: 2rem 0 4rem 0;
 }
-.app__footer{
+
+.app__footer {
   display: none;
 }
+
 /* ========================media queries =============================================*/
 
 @media screen and (max-width:757px) {
   .app {
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
     align-items: center;
 
   }
@@ -120,14 +126,17 @@ input {
   .suggestions {
     display: none;
   }
-  .app__suggestionBox{
+
+  .app__suggestionBox {
     display: none;
   }
-  .app__onlineSection{
+
+  .app__onlineSection {
     width: 70%;
     margin-left: 4rem;
   }
-  .app__footer{
+
+  .app__footer {
     display: block;
     width: 95%;
   }

@@ -1,40 +1,38 @@
-import React, { useState } from 'react';
-import './styles.css'
-import Button from '@mui/material/Button';
+import React, { useState } from "react";
+import "./styles.css";
+import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from '../../firebaseConfig';
-
+import { auth } from "../../firebaseConfig";
 
 const initialState = {
-    email: "",
-    password: "",
-  };
+  email: "",
+  password: "",
+};
 const Login = () => {
-    const [formData, setFormData] = useState(initialState);
-    const [error, setError] = useState("")
+  const [formData, setFormData] = useState(initialState);
+  const [error, setError] = useState("");
 
-    const signIn = (e) => {
-      e.preventDefault();
-      signInWithEmailAndPassword(auth, formData.email, formData.password)
+  const signIn = (e) => {
+    e.preventDefault();
+    signInWithEmailAndPassword(auth, formData.email, formData.password)
       .then((userCredential) => {
-        // Signed in 
+        // Signed in
         const user = userCredential.user;
         // ...
       })
-      
+
       .catch((error) => {
         const errorMessage = error.message;
-        setError(errorMessage)
+        setError(errorMessage);
       });
-      
-    };
-    const handleChange = (e) => {
-      const value = e.target.value;
-      setFormData({ ...formData, [e.target.name]: value });
-    };
+  };
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setFormData({ ...formData, [e.target.name]: value });
+  };
   return (
-    <div className='login'>
+    <div className="login">
       <div className="login__field">
         <TextField
           type="email"
@@ -65,16 +63,16 @@ const Login = () => {
           onClick={signIn}
           style={{ width: "200px" }}
         >
-         Sign In
+          Sign In
         </Button>
       </div>
       <div className="signup__button signup__field">
-          <span>
-            <strong>{error}</strong>
-          </span>
-        </div>
+        <span>
+          <strong>{error}</strong>
+        </span>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

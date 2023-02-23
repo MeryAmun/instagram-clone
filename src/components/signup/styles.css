@@ -1,4 +1,4 @@
-.signup__field{
+.signup__field {
     margin: 15px;
     padding-right: 40px;
 }
@@ -6,15 +6,17 @@
 /* ========================media queries =============================================*/
 
 @media screen and (max-width:757px) {
-    .signup{
+    .signup {
         width: 400px;
         padding: 20px;
     }
-    .signup__field{
+
+    .signup__field {
         width: 300px;
-    
+
     }
-   .form__switchButton{
-    padding: 1rem;
-   }
+
+    .form__switchButton {
+        padding: 1rem;
+    }
 }

@@ -2,47 +2,51 @@
   width: 100%;
   padding: 20px;
 } */
-  .profile__formContainer{
-  width: 100%;
-}
-  .createPost__header{
+.profile__formContainer {
   width: 100%;
 }
 
+.createPost__header {
+  width: 100%;
+}
 
-.profile__header{
-    background-color: white;
-    object-fit: contain;
-    padding: 20px;
-    border-bottom:  1px solid lightgray;
-    display: flex;
-    justify-content: space-between;
-  }
-.profile__ImageContainer{
+
+.profile__header {
+  background-color: white;
+  object-fit: contain;
+  padding: 20px;
+  border-bottom: 1px solid lightgray;
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile__ImageContainer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-    width: 300px;
-    margin: 20px;
-}
-  .profile__text{
-    font-weight: normal;
-    padding: 20px;
+  width: 300px;
+  margin: 20px;
 }
 
-.profile__header{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
+.profile__text {
+  font-weight: normal;
+  padding: 20px;
 }
-.image__container{
+
+.profile__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+
+.image__container {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.profile__avatar{
+.profile__avatar {
   width: 35px;
   height: 35px;
   border-radius: 50%;
@@ -51,22 +55,25 @@
 /* ========================media queries =============================================*/
 
 @media screen and (max-width:757px) {
-  .profile{
-      width: 100%;
-      padding: 20px;
+  .profile {
+    width: 100%;
+    padding: 20px;
   }
-   .profile__header{
+
+  .profile__header {
     margin-right: 2rem;
-   }
-  .profile__form{
-   padding-right: 1rem;
   }
-  .profile__details{
+
+  .profile__form {
+    padding-right: 1rem;
+  }
+
+  .profile__details {
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
   }
-  
+
 }

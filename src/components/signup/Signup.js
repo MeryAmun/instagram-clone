@@ -19,19 +19,17 @@ const Signup = () => {
   const signUp = (e) => {
     e.preventDefault();
     createUserWithEmailAndPassword(auth, formData.email, formData.password)
-    .then(() => {
+      .then(() => {
         updateProfile(auth.currentUser, {
-            displayName: formData.username,
+          displayName: formData.username,
         });
-        window.location.reload()
-    })
+        window.location.reload();
+      })
       .catch((error) => {
         const errorMessage = error.message;
         setError(errorMessage);
       });
-   
   };
-
 
   const handleChange = (e) => {
     const value = e.target.value;

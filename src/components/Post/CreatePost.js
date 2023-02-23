@@ -7,16 +7,15 @@ import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
 import { db, storage } from "../../firebaseConfig";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { collection, addDoc} from "firebase/firestore";
-import {Header } from '../index'
+import { collection, addDoc } from "firebase/firestore";
+import { Header } from "../index";
 
-const CreatePost = ({ username,userId,profileUrl}) => {
+const CreatePost = ({ username, userId, profileUrl }) => {
   const [currentFile, setCurrentFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const [progress, setProgress] = useState(0);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-
 
   const onFileChangeHandler = (e) => {
     setCurrentFile(e.target.files[0]);
@@ -47,36 +46,32 @@ const CreatePost = ({ username,userId,profileUrl}) => {
         async () => {
           await getDownloadURL(uploadTask.snapshot.ref).then((url) => {
             addDoc(collection(db, "posts"), {
-              timestamp:new Date().toLocaleString(),
+              timestamp: new Date().toLocaleString(),
               message: message,
               imageUrl: url,
               username: username,
-              userId:userId,
-              userProfileUrl:profileUrl
+              userId: userId,
+              userProfileUrl: profileUrl,
             });
             setProgress(0);
-            setCurrentFile(null)
-            setMessage('')
-            setPreviewImage(null)
+            setCurrentFile(null);
+            setMessage("");
+            setPreviewImage(null);
           });
         }
       );
     }
-  
   };
-
 
   return (
     <div className="createPost">
-      <Header/>
+      <Header />
       <div className="createPost__header">
-        {
-          currentFile ? (
-            <Box sx={{ width: "100%" }}>
-          <LinearProgress variant="determinate" value={progress} />
-        </Box>
-          ) : null
-        }
+        {currentFile ? (
+          <Box sx={{ width: "100%" }}>
+            <LinearProgress variant="determinate" value={progress} />
+          </Box>
+        ) : null}
       </div>
       <form>
         <div className="">
@@ -113,7 +108,7 @@ const CreatePost = ({ username,userId,profileUrl}) => {
             </div>
           )}
         </div>
-  
+
         <div className="imageUpload__messageContainer">
           <TextareaAutosize
             aria-label="minimum height"
@@ -126,7 +121,7 @@ const CreatePost = ({ username,userId,profileUrl}) => {
             value={message}
           />
         </div>
-    
+
         <div className="imageUpload__button">
           <Button
             type="button"

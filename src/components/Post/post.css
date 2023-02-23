@@ -1,19 +1,27 @@
-.post{
+.post {
     /* background-color: white; */
     max-width: 500px;
-    border: 1px solid lightgray;
-    margin-left: 4rem;
+    border: 1px solid rgb(255, 255, 255);
+    margin: 1rem;
     padding: 10px;
-   
+    border-radius: 20px;
+
 }
-.post__middleDot{
+
+.post:first-child {
+    margin-top: 4rem;
+}
+
+.post__middleDot {
     margin: 5px;
     color: gray;
 }
-.post__timestamp{
+
+.post__timestamp {
     color: gray;
 }
-.post__image{
+
+.post__image {
     width: 100%;
     object-fit: contain;
     /* border-top: 1px solid lightgray;
@@ -21,30 +29,33 @@
     border-radius: 5px;
 }
 
-.post__text{
+.post__text {
     font-weight: normal;
     padding: 20px;
 }
 
-.post__header{
+.post__header {
     display: flex;
     align-items: center;
     padding: 20px;
 }
-.post__avatar{
-margin-right: 10px;
-cursor:pointer;
-}
-.post__text{
-   word-wrap: break-word; 
+
+.post__avatar {
+    margin-right: 10px;
+    cursor: pointer;
 }
 
-.post__headerContainer{
+.post__text {
+    word-wrap: break-word;
+}
+
+.post__headerContainer {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-.post__actionIcons{
+
+.post__actionIcons {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -52,120 +63,141 @@ cursor:pointer;
     margin-right: 1rem;
 }
 
-.post__deleteIcon{
-margin: .3rem;
-background: #fff;
-color: gray;
-cursor: pointer;
-/* border: 1px solid lightgray; */
-transition: background 4s ease-in-out 2s;
+.post__deleteIcon {
+    margin: .3rem;
+    background: #fff;
+    color: gray;
+    cursor: pointer;
+    /* border: 1px solid lightgray; */
+    transition: background 4s ease-in-out 2s;
 }
-.post__editIcon{
-margin: .3rem;
-color: rgb(10, 10, 10);
-cursor: pointer;
-/* border: 1px solid lightgray; */
-transition: background-color  1s;
+
+.post__editIcon {
+    margin: .3rem;
+    color: rgb(10, 10, 10);
+    cursor: pointer;
+    /* border: 1px solid lightgray; */
+    transition: background-color 1s;
 }
-.post__deleteIcon:hover{
+
+.post__deleteIcon:hover {
     background: lightgray;
 }
-.post__editIcon:hover{
+
+.post__editIcon:hover {
     background: lightgray;
     /* opacity: 0.8; */
 }
 
-.post__reactions{
-display: flex;
-flex-direction: column;
-justify-content: flex-start;
-align-items: flex-start;
-height: 100%;
-margin: 0;
+.post__reactions {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    height: 100%;
+    margin: 0;
 }
-.post__reactionsHeader{
+
+.post__reactionsHeader {
     display: flex;
     justify-content: flex-start;
-    align-items:center;
-    
+    align-items: center;
+
 }
-.post__reactionType{
-margin: 5px;
-cursor: pointer;
+
+.post__reactionType {
+    margin: 5px;
+    cursor: pointer;
 }
-.post__reactionIconSelected{
+
+.post__reactionIconSelected {
     color: red;
 }
-.post__reactionCount{
+
+.post__reactionCount {
     margin: 3px;
 }
-.post__readComments{
+
+.post__readComments {
     width: 100%;
     display: flex;
-flex-direction: column;
-justify-content: flex-start;
-align-items: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
 }
-.post__commentText{
+
+.post__commentText {
     border-bottom: 1px solid lightgray;
     outline: none;
     width: 97%;
     padding: 5px;
 }
-form{
+
+form {
     width: 100%;
 }
 
-.post__comment{
-word-wrap: break-word;
-font-size: 15px; 
-color: rgb(38, 38, 38);
-font-weight: 400;
-font-family: Arial, Helvetica, sans-serif;
-}
-.post__viewComments{
-    font-size: 13px; 
-color:gray;
-font-weight: 400;
-font-family: Arial, Helvetica, sans-serif;
-cursor: pointer;
+.post__comment {
+    word-wrap: break-word;
+    font-size: 15px;
+    color: rgb(38, 38, 38);
+    font-weight: 400;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-.post__commentBox{
+.post__viewComments {
+    font-size: 13px;
+    color: gray;
+    font-weight: 400;
+    font-family: Arial, Helvetica, sans-serif;
+    cursor: pointer;
+}
+
+.post__commentBox {
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    word-wrap: break-word; 
+    word-wrap: break-word;
 }
-.post__commentForm{
+
+.post__commentForm {
     width: 100%;
 }
-.post__commenter{
+
+.post__commenter {
     flex: 1;
     display: flex;
     justify-content: flex-start;
     align-items: center;
 }
-.post__commentAvatar{
+
+.post__commentAvatar {
     width: 35px;
     height: 35px;
     border-radius: 50%;
     margin: 0.3rem;
 }
-.post__avatar{
+
+.post__avatar {
     width: 40px;
     height: 40px;
     border-radius: 50%;
 }
+
 /* ========================media queries =============================================*/
 
 @media screen and (max-width:757px) {
-  .post{
-    margin-top: 3rem;
-    margin-left: 0;
+    .post {
+        /* margin-top: 3rem; */
+        margin-left: 0;
+        padding: .3rem;
     }
-   
+
+    .post:first-child {
+        margin-top: 3rem;
+    }
+
 
     /* .post__image{
         width: 250px;

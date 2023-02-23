@@ -7,48 +7,42 @@ import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
 import { auth, db, storage } from "../../firebaseConfig";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import {
-  collection,
-  addDoc,
-  updateDoc,
-  doc,
-} from "firebase/firestore";
+import { collection, addDoc, updateDoc, doc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 
-const EditPost = ({ imageUrl, message, uid,userId }) => {
+const EditPost = ({ imageUrl, message, uid, userId }) => {
   const [currentFile, setCurrentFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const [progress, setProgress] = useState(0);
   const [newMessage, setNewMessage] = useState(message);
   const [newUrl, setNewUrl] = useState(imageUrl);
   const [error, setError] = useState("");
-  const [currentUserId, setCurrentUserId] = useState(null)
+  const [currentUserId, setCurrentUserId] = useState(null);
 
   useEffect(() => {
-onAuthStateChanged(auth,(authUser) => {
-  if (authUser) {
-    setCurrentUserId(authUser?.uid);
-  } else {
-    setCurrentUserId(null);
-  }
-  })
-  }, [])
-  
+    onAuthStateChanged(auth, (authUser) => {
+      if (authUser) {
+        setCurrentUserId(authUser?.uid);
+      } else {
+        setCurrentUserId(null);
+      }
+    });
+  }, []);
 
   const handleUpdate = async (e) => {
     e.preventDefault();
     const taskDocRef = doc(db, "posts", uid);
-   if(uid && currentUserId === userId){
-    try {
-      await updateDoc(taskDocRef, {
-        message: newMessage,
-        imageUrl: newUrl,
-      });
-      //onClose()
-    } catch (err) {
-      alert(err);
+    if (uid && currentUserId === userId) {
+      try {
+        await updateDoc(taskDocRef, {
+          message: newMessage,
+          imageUrl: newUrl,
+        });
+        //onClose()
+      } catch (err) {
+        alert(err);
+      }
     }
-   }
   };
   const onFileChangeHandler = (e) => {
     setCurrentFile(e.target.files[0]);
@@ -57,32 +51,32 @@ onAuthStateChanged(auth,(authUser) => {
     }
     // onHandleUpload()
   };
-//   const onHandleUpload = () => {
-//     const storageRef = ref(storage, `/images/${currentFile.name}`);
-//     const uploadTask = uploadBytesResumable(storageRef, currentFile);
-//     uploadTask.on(
-//       "state_changed",
-//       (snapshot) => {
-//         const percent = Math.round(
-//           (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-//         );
-//         setProgress(percent);
-//       },
-//       (err) => {
-//         const errorMessage = err.message;
-//         setError(errorMessage);
-//       },
-//       async () => {
-//         await getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-//          setNewUrl(url)
-//           setProgress(0);
-//            setCurrentFile(null)
-//           setPreviewImage(null);
-//         });
-//       }
-//     );
-//   };
-// console.log(newUrl)
+  //   const onHandleUpload = () => {
+  //     const storageRef = ref(storage, `/images/${currentFile.name}`);
+  //     const uploadTask = uploadBytesResumable(storageRef, currentFile);
+  //     uploadTask.on(
+  //       "state_changed",
+  //       (snapshot) => {
+  //         const percent = Math.round(
+  //           (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+  //         );
+  //         setProgress(percent);
+  //       },
+  //       (err) => {
+  //         const errorMessage = err.message;
+  //         setError(errorMessage);
+  //       },
+  //       async () => {
+  //         await getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+  //          setNewUrl(url)
+  //           setProgress(0);
+  //            setCurrentFile(null)
+  //           setPreviewImage(null);
+  //         });
+  //       }
+  //     );
+  //   };
+  // console.log(newUrl)
   return (
     <div className="createPost">
       <div className="createPost__header">

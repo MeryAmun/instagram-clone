@@ -11,11 +11,11 @@ import {
   SmallHeader,
   ModalComponent,
   Footer,
-  Loader
+  Loader,
 } from "./components";
 import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
 import { auth, db } from "./firebaseConfig";
-import{ Button, Box, CircularProgress} from "@mui/material";
+import { Button, Box, CircularProgress } from "@mui/material";
 import { onAuthStateChanged } from "firebase/auth";
 import { defaultImage } from "./data/dummyData";
 export const style = {
@@ -38,8 +38,7 @@ function App() {
   const [userId, setUserId] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [form, setForm] = useState("Signup");
-  const [loading, setLoading] = useState(true)
-
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     onAuthStateChanged(auth, (authUser) => {
@@ -69,96 +68,87 @@ function App() {
       );
       setLoading(false);
     });
-    
   }, []);
   useEffect(() => {
-    const data = query(collection(db, "profiles"), orderBy("timestamp", "desc"));
+    const data = query(
+      collection(db, "profiles"),
+      orderBy("timestamp", "desc")
+    );
     onSnapshot(data, (querySnapshot) => {
-      setProfileImageUrls(
-        querySnapshot.docs.map((doc) =>  doc.data(),
-      )
-      );
+      setProfileImageUrls(querySnapshot.docs.map((doc) => doc.data()));
     });
   }, []);
 
   // useEffect(() => {
-    
+
   // }, [])
-  
 
-
-if(loading){
-  return ( 
- <Loader/>
-)
-}
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="app">
-      {user ? <Sidebar profilePicture={profileImageUrls}  user={user} userId={userId}/> : null}
+      {user ? (
+        <Sidebar
+          profilePicture={profileImageUrls}
+          user={user}
+          userId={userId}
+        />
+      ) : null}
       <div className="app__box">
-        <SmallHeader 
-       userImage={userImage}
-        open={open} 
-        close={() => setOpen(false)} 
-        profilePicture={profileImageUrls}
-         user={user} 
-         userId={userId}
-      />
-        {user ? <div className="app__onlineSection">
-        <Online />
-        </div> : null}
+        <SmallHeader
+          userImage={userImage}
+          open={open}
+          close={() => setOpen(false)}
+          profilePicture={profileImageUrls}
+          user={user}
+          userId={userId}
+        />
+        {user ? (
+          <div className="app__onlineSection">
+            <Online />
+          </div>
+        ) : null}
         <div className="app__container">
           <div className="app__posts">
             <div className="app__postLeft">
               {/* Post */}
               <div className="app__post">
                 {posts.map(({ post, id }) => (
-                  <Post key={id} {...post} uid={id} profilePicture={profileImageUrls}/>
+                  <Post
+                    key={id}
+                    {...post}
+                    uid={id}
+                    profilePicture={profileImageUrls}
+                  />
                 ))}
               </div>
-            </div>
-            <div className="app__postRight">
-              <InstagramEmbed
-                clientAccessToken="<appId>|<clientToken>"
-                url="https://www.instagram.com/p/CPqNU32h0H8/"
-                maxWidth={375}
-                hideCaption={false}
-                containerTagName="div"
-                injectScript
-                protocol=""
-                onLoading={() => {}}
-                onSuccess={() => {}}
-                onAfterRender={() => {}}
-                onFailure={() => {}}
-              />
             </div>
           </div>
         </div>
       </div>
       {user ? (
-        <Suggestions 
-         user={user}
-        userImage={userImage} 
-        userId={userId}
-        profilePicture={profileImageUrls} 
+        <Suggestions
+          user={user}
+          userImage={userImage}
+          userId={userId}
+          profilePicture={profileImageUrls}
         />
       ) : (
         <div className="app__suggestionBox">
-          
-            <div className="app__header">
-              <img
-                src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
-                alt="logo"
-                className="app__headerImage"
-              />
-              
-            </div>
-            {/* <Button onClick={() => setOpen(true)}>Login</Button> */}
-            {/* <ModalComponent open={open} close={() => setOpen(false)}> */}
-         <div className="app__login">
-         <Box>
-            <div className="modal__header">
+          <div className="app__header">
+            <img
+              src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
+              alt="logo"
+              className="app__headerImage"
+            />
+          </div>
+          {/* <Button onClick={() => setOpen(true)}>Login</Button> */}
+          {/* <ModalComponent open={open} close={() => setOpen(false)}> */}
+          <div className="app__login">
+            <Box>
+              <div className="modal__header">
                 <div className="app__loginHeader">
                   <img
                     src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
@@ -166,49 +156,45 @@ if(loading){
                     className="app__headerImage"
                   />
                 </div>
-              <div className="form__switchButton">
+                <div className="form__switchButton">
+                  {form === "Signup" ? (
+                    <div className="form__switchButtonContainer">
+                      <span>
+                        <strong>Already have an account ?</strong>
+                      </span>
+                      <Button onClick={() => setForm("Login")}>Login</Button>
+                    </div>
+                  ) : (
+                    <div className="form__switchButtonContainer">
+                      <span>
+                        <strong>Don't yet have an account ?</strong>
+                      </span>
+                      <Button onClick={() => setForm("Signup")}>Signup</Button>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="modal__body">
                 {form === "Signup" ? (
-                  <div className="form__switchButtonContainer">
-                    <span>
-                      <strong>Already have an account ?</strong>
-                    </span>
-                    <Button onClick={() => setForm("Login")}>
-                      Login
-                    </Button>
-                  </div>
+                  <center>
+                    {" "}
+                    <Signup />
+                  </center>
                 ) : (
-                  <div className="form__switchButtonContainer">
-                    <span>
-                      <strong>Don't yet have an account ?</strong>
-                    </span>
-                    <Button onClick={() => setForm("Signup")}>
-                      Signup
-                    </Button>
-                  </div>
+                  <center>
+                    {" "}
+                    <Login />
+                  </center>
                 )}
               </div>
-            </div>
-            <div className="modal__body">
-              {form === "Signup" ? (
-                <center>
-                  {" "}
-                  <Signup />
-                </center>
-              ) : (
-                <center>
-                  {" "}
-                  <Login />
-                </center>
-              )}
-            </div>
-            <Footer/>
-          </Box>
-         </div>
+              <Footer />
+            </Box>
+          </div>
         </div>
       )}
-     <div className="app__footer">
-     <Footer/>
-     </div>
+      <div className="app__footer">
+        <Footer />
+      </div>
     </div>
   );
 }
