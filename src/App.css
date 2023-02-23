@@ -96,7 +96,7 @@ input {
   padding: 10px 0px;
 }
 .modal__body{
-  margin: 4rem 0;
+  margin: 2rem 0 4rem 0;
 }
 .app__footer{
   display: none;
