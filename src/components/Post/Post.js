@@ -26,11 +26,10 @@ import { style } from "../../App";
 import { Send } from "react-feather";
 import { Heart } from "react-feather";
 import { MessageCircle } from "react-feather";
-import { defaultImage } from "../../data/dummyData";
+import { defaultImage } from "../../assets";
 import { onAuthStateChanged } from "firebase/auth";
 import moment from "moment";
 import { Tooltip } from "@mui/material";
-import { async } from "@firebase/util";
 
 const Comment = ({
   imageUrl,
@@ -294,7 +293,7 @@ console.log(likesCount)
       {/* header plus avatar */}
       <div className="post__headerContainer">
         <div className="post__header">
-          <img alt="avatar" src={userProfileUrl} className="post__avatar" />
+          <img alt="avatar" src={userProfileUrl ? userProfileUrl : defaultImage} className="post__avatar" />
           <h3>{username}</h3>{" "}
           <strong className="post__middleDot">&middot;</strong>
           {/* <span className="post__timestamp">{newTimestamp}</span> */}
@@ -373,7 +372,7 @@ console.log(likesCount)
                 <div className="post__commentBox" key={id}>
                   <div className="post__commenter">
                     <img
-                      src={userImage}
+                      src={userImage ? userImage : defaultImage}
                       alt="avatar"
                       className="post__commentAvatar"
                     />

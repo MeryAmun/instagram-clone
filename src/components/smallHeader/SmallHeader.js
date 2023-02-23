@@ -4,7 +4,7 @@ import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import {  Header, Login, ModalComponent, Profile, Signup } from "../index";
 import "./smallHeader.css";
-import { defaultImage } from "../../data/dummyData";
+import { defaultImage } from "../../assets";
 import { style } from "../../App";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
@@ -40,12 +40,14 @@ const SmallHeader = ({user, profilePicture,userId}) => {
           <X />
         </div> */}
       </div>
-      <span className="smallHeader__icon">
-        <Heart size={20}/>
-      </span>
+     
       {
         user ? (
+          
           <div className="suggestion__imageBox">
+             <span className="smallHeader__icon">
+        <Heart size={20}/>
+      </span>
             <img
               alt="avatar"
               src={profileUrl ? profileUrl : defaultImage}

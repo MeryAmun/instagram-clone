@@ -1,14 +1,16 @@
-import React from 'react';
-import { Box, CircularProgress, Stack} from '@mui/material'
+import React from 'react'
+import{  CircularProgress} from "@mui/material";
+import { loader } from '../../assets';
+import './loader.css'
 
 const Loader = () => {
   return (
-    <Box minHeight='95vh'>
-<Stack direction='row' justifyContent='center' alignItems='center' height='80vh'>
-  <CircularProgress/>
-</Stack>
-    </Box>
-
+    <div className="loader">
+     <div className="loader__imageBox">
+      <img src={loader} alt="loader" className='loader__image'/>
+     </div>
+  <center><CircularProgress /></center>
+</div>
   )
 }
 

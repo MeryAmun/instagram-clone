@@ -18,7 +18,13 @@
     display: flex;
     justify-content: space-between;
   }
-
+.profile__ImageContainer{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+    width: 300px;
+    margin: 20px;
+}
   .profile__text{
     font-weight: normal;
     padding: 20px;
@@ -50,7 +56,10 @@
       padding: 20px;
   }
    .profile__header{
-      width: 300px;
+    margin-right: 2rem;
+   }
+  .profile__form{
+   padding-right: 1rem;
   }
   .profile__details{
     width: 100%;

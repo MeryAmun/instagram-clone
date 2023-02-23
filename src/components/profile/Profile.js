@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { auth } from "../../firebaseConfig";
-import { Button, IconButton } from "@mui/material";
+import { Button, IconButton ,Paper,Modal} from "@mui/material";
 import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
 import { signOut } from "firebase/auth";
 import "./profile.css";
-import Avatar from '@mui/material/Avatar';
-import { db, storage } from "../../firebaseConfig";
-import { collection, addDoc,serverTimestamp, updateDoc} from "firebase/firestore";
+import {  storage } from "../../firebaseConfig";
+import { Login } from '../index'
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { defaultImage } from "../../data/dummyData";
+import { defaultImage } from "../../assets";
 import { onAuthStateChanged, updateProfile } from "firebase/auth";
+import { style } from "../../App";
 
 const Profile = () => {
   const [currentFile, setCurrentFile] = useState(null);
@@ -21,6 +21,7 @@ const Profile = () => {
   const [currentUser, setCurrentUser] = useState(null)
   const [newImageUrl, setNewImageUrl] = useState(null);
   const [email, setEmail] = useState(null)
+  const [open, setOpen] = useState(false);
 const [currentUserImage, setCurrentUserImage] = useState(auth?.currentUser?.photoURL)
 
 
@@ -34,6 +35,9 @@ const [currentUserImage, setCurrentUserImage] = useState(auth?.currentUser?.phot
     if(authUser?.photoURL === ''){
        setCurrentUserImage(authUser?.photoURL)
     }
+    
+      //setCurrentUserImage(defaultImage)
+    
   })
   }, [userId]);
 
@@ -146,7 +150,7 @@ const [currentUserImage, setCurrentUserImage] = useState(auth?.currentUser?.phot
        }
         <form className="profile__form">
         <div className="profile__formContainer">
-          <div className="image__container">
+          <div className="profile__ImageContainer">
             <span className="image_label">Select Photo</span>
             <IconButton
               color="primary"
@@ -159,7 +163,7 @@ const [currentUserImage, setCurrentUserImage] = useState(auth?.currentUser?.phot
                 type="file"
                 onChange={onFileChangeHandler}
               />
-            <img alt='avatar' src={currentUserImage}
+            <img alt='avatar' src={currentUserImage ? currentUserImage : defaultImage}
         className='profile__avatar'/>
             </IconButton>
           </div>
@@ -217,8 +221,30 @@ const [currentUserImage, setCurrentUserImage] = useState(auth?.currentUser?.phot
 <div className="profile__details">
 <h4 className='profile__text'><strong>Username</strong>: {currentUser}</h4>
       <h4 className='profile__text'><strong>Email</strong>: {email}</h4>
+      <a href='#' className='suggestion__switch' onClick={() => setOpen(true)}>Switch</a>
 </div>
       </div>
+      <div className="suggestion__switch">
+            {/* switch accounts modal */}
+        <Paper elevation={3}>
+        <Box>
+          <div className="app__modal">
+            <Modal
+              open={open}
+              onClose={() => setOpen(false)}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={style}>
+                <div className="modal__body">
+                    <Login />
+                </div>
+              </Box>
+            </Modal>
+          </div>
+        </Box>
+      </Paper>
+        </div>
     </div>
   );
 };

@@ -20,13 +20,14 @@ const Login = () => {
       .then((userCredential) => {
         // Signed in 
         const user = userCredential.user;
-      
         // ...
       })
+      
       .catch((error) => {
         const errorMessage = error.message;
         setError(errorMessage)
       });
+      
     };
     const handleChange = (e) => {
       const value = e.target.value;

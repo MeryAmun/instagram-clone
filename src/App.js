@@ -10,7 +10,8 @@ import {
   Online,
   SmallHeader,
   ModalComponent,
-  Footer
+  Footer,
+  Loader
 } from "./components";
 import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
 import { auth, db } from "./firebaseConfig";
@@ -66,7 +67,9 @@ function App() {
           post: doc.data(),
         }))
       );
+      setLoading(false);
     });
+    
   }, []);
   useEffect(() => {
     const data = query(collection(db, "profiles"), orderBy("timestamp", "desc"));
@@ -78,17 +81,15 @@ function App() {
     });
   }, []);
 
-  useEffect(() => {
-    setLoading(false)
-  }, [])
+  // useEffect(() => {
+    
+  // }, [])
   
 
 
 if(loading){
   return ( 
-  <div className="loader">
-  <center><CircularProgress /></center>
-</div>
+ <Loader/>
 )
 }
 
@@ -205,6 +206,9 @@ if(loading){
          </div>
         </div>
       )}
+     <div className="app__footer">
+     <Footer/>
+     </div>
     </div>
   );
 }

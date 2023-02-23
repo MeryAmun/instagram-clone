@@ -19,7 +19,7 @@ import {
 import "./sidebar.css";
 import { style } from "../../App";
 import { auth } from "../../firebaseConfig";
-import { defaultImage } from "../../data/dummyData";
+import { defaultImage } from "../../assets";
 
 const Sidebar = ({ profilePicture, user }) => {
   const [userId, setUserId] = useState(null);
@@ -164,7 +164,7 @@ const Sidebar = ({ profilePicture, user }) => {
           >
             <img
               alt="avatar"
-              src={profileUrl}
+              src={profileUrl ? profileUrl : defaultImage}
               className="sidebar__icon sidebar__iconImage"
             />
             <span className="sidebar__linkTitle">Profile</span>

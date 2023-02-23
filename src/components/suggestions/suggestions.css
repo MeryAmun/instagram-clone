@@ -13,6 +13,7 @@
 .suggestion__imageBox{
     display: flex;
     justify-content: center;
+    cursor: pointer;
 }
 .suggestion__name{
     display: flex;

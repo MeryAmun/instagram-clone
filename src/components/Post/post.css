@@ -2,7 +2,7 @@
     /* background-color: white; */
     max-width: 500px;
     border: 1px solid lightgray;
-    margin: 20px;
+    margin-left: 4rem;
     padding: 10px;
    
 }
@@ -163,7 +163,9 @@ cursor: pointer;
 @media screen and (max-width:757px) {
   .post{
     margin-top: 3rem;
+    margin-left: 0;
     }
+   
 
     /* .post__image{
         width: 250px;

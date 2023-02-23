@@ -10,14 +10,7 @@
 
 
 }
-.loader{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 16rem;
-  width: 100%;
-}
+
 
 .app__suggestionBox {
   flex: 0.40;
@@ -29,6 +22,7 @@
   margin-top: 2rem;
   width: 250px;
 }
+
 
 .app__box {
   flex: 0.60;
@@ -101,6 +95,9 @@ input {
   justify-content: center;
   padding: 10px 0px;
 }
+.app__footer{
+  display: none;
+}
 /* ========================media queries =============================================*/
 
 @media screen and (max-width:757px) {
@@ -126,6 +123,10 @@ input {
   .app__onlineSection{
     width: 70%;
     margin-left: 4rem;
+  }
+  .app__footer{
+    display: block;
+    width: 95%;
   }
 }
 

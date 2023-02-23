@@ -21,3 +21,13 @@ color: lightgray;
 .footer__copyright{
 color: lightgray;
 }
+
+
+@media screen and (max-width:757px) {
+    .footer__link{
+        text-decoration: none;
+        color: lightgray;
+        font-size: 12px;
+        margin: 2px;
+        }
+}

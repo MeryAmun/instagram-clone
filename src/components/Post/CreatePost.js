@@ -62,6 +62,7 @@ const CreatePost = ({ username,userId,profileUrl}) => {
         }
       );
     }
+  
   };
 
 

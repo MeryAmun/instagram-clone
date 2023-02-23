@@ -8,7 +8,7 @@ import {Profile,Login, Footer } from  '../index'
 import { onAuthStateChanged } from "firebase/auth";
 import { style } from '../../App';
 import { auth } from '../../firebaseConfig';
-import { defaultImage } from '../../data/dummyData';
+import { defaultImage } from '../../assets';
 
 
 const Suggestions = ({user,  profilePicture,userId}) => {
@@ -22,7 +22,7 @@ const Suggestions = ({user,  profilePicture,userId}) => {
         if (authUser) {
           setProfileUrl(authUser?.photoURL)
         } else {
-    setProfileUrl(defaultImage)
+    //setProfileUrl(defaultImage)
   
         }
       });
@@ -39,7 +39,7 @@ const Suggestions = ({user,  profilePicture,userId}) => {
             <div className="suggestion__imageBox">
             <img
               alt="avatar"
-              src={profileUrl}
+              src={ profileUrl ? profileUrl : defaultImage}
               className="suggestion__ProfileAvatar"
               onClick={() => setOpenProfile(true)}
             />
