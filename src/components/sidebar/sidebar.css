@@ -37,7 +37,8 @@
   
 }
 .sidebar__icon:hover{
-  padding: 0.5px;
+  transition: transform 0.2s ease-in-out;
+  transform: scale(1.2) !important;
 }
 /* .sidebar__iconBox:hover > .sidebar__icon{
   padding: 1px;

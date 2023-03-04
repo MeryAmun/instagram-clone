@@ -31,7 +31,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import moment from "moment";
 import { Tooltip } from "@mui/material";
 
-const Comment = ({
+const Post = ({
   imageUrl,
   username,
   message,
@@ -46,7 +46,7 @@ const Comment = ({
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
   const [likes, setLikes] = useState([]);
-  const [likeId, setLikeId] = useState(null)
+  const [likeId, setLikeId] = useState(null);
   const [likesCount, setLikesCount] = useState(0);
   const [shares, setShares] = useState(0);
   const [sharesCount, setSharesCount] = useState(shares);
@@ -99,23 +99,22 @@ const Comment = ({
       });
     }
 
-    likes?.map(({likedUserId, numOfLikes}) => {
-      if(likedUserId === currentUserId){
-        setLikeId(likedUserId)
-      }else{
-        setLikeId(null)
+    likes?.map(({ likedUserId, numOfLikes }) => {
+      if (likedUserId === currentUserId) {
+        setLikeId(likedUserId);
+      } else {
+        setLikeId(null);
       }
-//setLikesCount(likesCount += numOfLikes)
+      //setLikesCount(likesCount += numOfLikes)
     });
-    for(let i = 0; i < likes.length; i++){
-      setLikesCount(likes.length)
-      }
-    
+    for (let i = 0; i < likes.length; i++) {
+      setLikesCount(likes.length);
+    }
   }, [liked]);
- 
-console.log(likes)
-console.log(likeId)
-console.log(likesCount)
+
+  console.log(likes);
+  console.log(likeId);
+  console.log(likesCount);
   //**============GETS SHARES COUNT ======================================================================================= */
   useEffect(() => {
     if (uid) {
@@ -162,48 +161,42 @@ console.log(likesCount)
   };
   //**============TOGGLE LIKE======================================================================================= */
 
-  
   const toggleLike = async (e) => {
-    if(!currentUserId){
+    if (!currentUserId) {
       setLikesCount(likesCount);
-      setLiked(false)
+      setLiked(false);
     }
     try {
-
-        if (currentUserId && !likeId) {
-          await addDoc(collection(db, "posts", uid, "likes"), {
-             numOfLikes: 1,
-             postId: uid,
-            likedUserId: currentUserId,
-          });
-          setLikesCount(likesCount + 1);
-          setLiked((prev) => !prev);
-
-        }
-      else{
+      if (currentUserId && !likeId) {
+        await addDoc(collection(db, "posts", uid, "likes"), {
+          numOfLikes: 1,
+          postId: uid,
+          likedUserId: currentUserId,
+        });
+        setLikesCount(likesCount + 1);
+        setLiked((prev) => !prev);
+      } else {
         //const postDocRef = doc(db, "posts", uid, "likes",likeId).id
-          // await updateDoc(postDocRef, {
-          //   numOfLikes: 0,
-          // });
-          setLikesCount(likesCount)
-          // console.log(postDocRef)
-          // console.log(likes)
-      //  //console.log( postDocRef.id)
-      //     try {
-      //       await deleteDoc(postDocRef);
-      //     } catch (err) {
-      //       alert(err);
-    
-      //     }
-          setLiked((prev) => !prev);
-        }
-        if (!currentUserId) {
-          setLikesCount(likesCount);
-        }
-  
-        // setLiked((prev) => !prev)
+        // await updateDoc(postDocRef, {
+        //   numOfLikes: 0,
+        // });
+        setLikesCount(likesCount);
+        // console.log(postDocRef)
+        // console.log(likes)
+        //  //console.log( postDocRef.id)
+        //     try {
+        //       await deleteDoc(postDocRef);
+        //     } catch (err) {
+        //       alert(err);
 
-      
+        //     }
+        setLiked((prev) => !prev);
+      }
+      if (!currentUserId) {
+        setLikesCount(likesCount);
+      }
+
+      // setLiked((prev) => !prev)
 
       // if(userId !== currentUserId && !liked){
       //   setLikesCount(likesCount + 1)
@@ -245,7 +238,7 @@ console.log(likesCount)
 
   //**============TOGGLE SHARE======================================================================================= */
   const toggleShare = async (e) => {
-    if(!currentUserId){
+    if (!currentUserId) {
       setSharesCount(sharesCount);
     }
     try {
@@ -293,7 +286,11 @@ console.log(likesCount)
       {/* header plus avatar */}
       <div className="post__headerContainer">
         <div className="post__header">
-          <img alt="avatar" src={userProfileUrl ? userProfileUrl : defaultImage} className="post__avatar" />
+          <img
+            alt="avatar"
+            src={userProfileUrl ? userProfileUrl : defaultImage}
+            className="post__avatar"
+          />
           <h3>{username}</h3>{" "}
           <strong className="post__middleDot">&middot;</strong>
           {/* <span className="post__timestamp">{newTimestamp}</span> */}
@@ -326,7 +323,9 @@ console.log(likesCount)
           <div className="post__reactionType">
             <Heart
               size={20}
-              className={currentUserId && liked ? "post__reactionIconSelected" : ""}
+              className={
+                currentUserId && liked ? "post__reactionIconSelected" : ""
+              }
               onClick={toggleLike}
             />
             <br />
@@ -346,7 +345,9 @@ console.log(likesCount)
           <div className="post__reactionType">
             <Send
               size={20}
-              className={currentUserId && shared ? "post__reactionIconSelected" : ""}
+              className={
+                currentUserId && shared ? "post__reactionIconSelected" : ""
+              }
               onClick={toggleShare}
             />
             <br />
@@ -435,4 +436,4 @@ console.log(likesCount)
   );
 };
 
-export default Comment;
+export default Post;

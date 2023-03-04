@@ -9,6 +9,7 @@
     .login {
         width: 400px;
         padding: 20px;
+        height: 50%;
     }
 
     .login__field {

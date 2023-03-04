@@ -60,7 +60,7 @@ const SmallHeader = ({ user, profilePicture, userId }) => {
           </ModalComponent>
         </div>
       ) : (
-        <div>
+        <div className="modal__component">
           <Button onClick={() => setOpenProfile(true)}>Login</Button>
           <ModalComponent
             open={openProfile}

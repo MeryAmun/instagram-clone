@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import InstagramEmbed from "react-instagram-embed";
 import "./App.css";
 import {
   Post,
