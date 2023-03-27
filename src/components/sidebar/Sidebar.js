@@ -55,6 +55,7 @@ const Sidebar = ({ profilePicture, user }) => {
                 onClose={() => setOpenProfile(false)}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
+                className="modal"
               >
                 <Box sx={style}>
                   <div className="modal__body">

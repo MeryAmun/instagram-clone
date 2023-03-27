@@ -66,7 +66,7 @@ const SmallHeader = ({ user, profilePicture, userId }) => {
             open={openProfile}
             close={() => setOpenProfile(false)}
           >
-            <Box sx={style}>
+            <Box sx={style} className="loginModal">
               <div className="modal__header">
                 <div className="app__header">
                   <img

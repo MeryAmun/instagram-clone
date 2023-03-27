@@ -60,3 +60,10 @@
         /* margin-bottom: 1rem; */
     }
 }
+
+@media (max-width:576px){
+    .loginModal{
+        height: 400px;
+       
+    }
+}

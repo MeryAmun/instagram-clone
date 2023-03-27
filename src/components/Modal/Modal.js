@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Modal from "@mui/material/Modal";
+import './modal.css'
 import { style } from "../../App";
 
 const ModalComponent = ({ children, open, close }) => {
@@ -10,11 +11,12 @@ const ModalComponent = ({ children, open, close }) => {
       {/* Profile Modal */}
       <Box>
         <div className="app__modal">
-          <Modal
+        <Modal
             open={open}
             onClose={close}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
+            className="modal"
           >
             <Box sx={style}>
               <div className="modal__body">{children}</div>
